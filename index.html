@@ -301,8 +301,8 @@ footer{background:#1a2e22;color:#a8bfb0;padding:44px 0 0;margin-top:44px}
 
 /* RESPONSIVE */
 @media(max-width:960px){.hero-grid{grid-template-columns:1fr}.cat-sb{display:none}}
-@media(max-width:768px){.features{grid-template-columns:1fr 1fr}.prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}.cart-layout{grid-template-columns:1fr}.co-layout{grid-template-columns:1fr}.pd-layout{grid-template-columns:1fr}.prof-layout{grid-template-columns:1fr}.ab-grid{grid-template-columns:1fr}.ct-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr}.feat3{grid-template-columns:1fr 1fr}.search-cat{display:none}}
-@media(max-width:480px){.features{grid-template-columns:1fr}.promo-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr}.feat3{grid-template-columns:1fr}.hbtn-label{display:none}}
+@media(max-width:768px){.features{grid-template-columns:1fr 1fr}.prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}.cart-layout{grid-template-columns:1fr}.co-layout{grid-template-columns:1fr}.pd-layout{grid-template-columns:1fr}.prof-layout{grid-template-columns:1fr}.ab-grid{grid-template-columns:1fr}.ct-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr}.feat3{grid-template-columns:1fr 1fr}.search-cat{display:none}.header-inner{flex-wrap:wrap;padding:8px 0;min-height:auto}.search-form{order:3;flex:0 0 100%;max-width:100%;margin:6px 0 2px}}
+@media(max-width:480px){.features{grid-template-columns:1fr}.promo-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr}.feat3{grid-template-columns:1fr}.hbtn-label{display:none}.topbar{display:none}.navbar .wr{overflow-x:auto;-webkit-overflow-scrolling:touch}.nav-links{flex-wrap:nowrap;overflow-x:auto}.nav-links a{padding:9px 11px;font-size:12px}.brand-name{font-size:14px}.brand-tag{display:none}.prod-card .prod-nm{font-size:12.5px}.tbl-wrap{overflow-x:auto}.modal-overlay .modal-box,.order-modal{max-width:100%!important;margin:10px;border-radius:12px}.sec{padding:18px 0}.pg-hero h1{font-size:18px}.hdr-actions{gap:3px}.hbtn{padding:5px 7px}.cart-hbtn{padding:6px 10px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -976,7 +976,7 @@ function prodCard(p){
         <span class="price-now">৳${(p.discountPrice||p.price||0).toLocaleString()}</span>
         ${p.discountPrice&&p.price?`<span class="price-was">৳${p.price.toLocaleString()}</span>`:''}
       </div>
-      <button class="atc-btn" onclick="addToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+      ${p.stock===0?`<button class="atc-btn" style="background:#aaa;cursor:not-allowed;opacity:.7" disabled><i class="fa-solid fa-ban"></i> Stock Out</button>`:`<button class="atc-btn" onclick="addToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>`}
     </div>
   </div>`;
 }
@@ -1014,7 +1014,24 @@ async function initHome(){
       document.getElementById('feat-grid').innerHTML=(featured.length?featured:allProds).slice(0,8).map(prodCard).join('');
       document.getElementById('new-grid').innerHTML=[...allProds].reverse().slice(0,8).map(prodCard).join('');
     }else{
-      document.getElementById('feat-grid').innerHTML='<p style="color:#aaa;grid-column:1/-1;text-align:center;padding:40px">No products yet. Add from admin panel.</p>';
+      document.getElementById('feat-grid').innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px"><div class="spin"></div></div>';
+      document.getElementById('new-grid').innerHTML='';
+      await seedDefaultProducts();
+      // re-fetch after seed
+      try{
+        const pS2=await get(ref(db,'products'));
+        const cS2=await get(ref(db,'categories'));
+        if(cS2.exists()){allCats=[];cS2.forEach(c=>{if(c.val().status!=='inactive')allCats.push({id:c.key,...c.val()});});}
+        if(pS2.exists()){
+          allProds=[];pS2.forEach(p=>allProds.push({id:p.key,...p.val()}));
+          allProds=allProds.filter(p=>p.status!=='inactive');
+          const featured=allProds.filter(p=>p.featured);
+          document.getElementById('feat-grid').innerHTML=(featured.length?featured:allProds).slice(0,8).map(prodCard).join('');
+          document.getElementById('new-grid').innerHTML=[...allProds].reverse().slice(0,8).map(prodCard).join('');
+        }else{
+          document.getElementById('feat-grid').innerHTML='<p style="color:#aaa;grid-column:1/-1;text-align:center;padding:40px">No products yet. Add from admin panel.</p>';
+        }
+      }catch(e2){document.getElementById('feat-grid').innerHTML='<p style="color:#aaa;grid-column:1/-1;text-align:center;padding:40px">No products yet. Add from admin panel.</p>';}
     }
   }catch(e){console.error(e);}
 }
@@ -1098,7 +1115,7 @@ async function initPD(pid){
         ${p.discountPrice&&p.price?`<span class="pd-price-old">৳${p.price.toLocaleString()}</span><span class="prod-badge">-${disc}%</span>`:''}
       </div>
       ${p.description?`<p style="font-size:13.5px;color:#555;line-height:1.8;margin-bottom:16px">${p.description}</p>`:''}
-      <div style="font-size:13px;color:var(--base);font-weight:600;margin-bottom:16px">✅ In Stock ${p.stock?`(${p.stock} units available)`:''}</div>
+      ${p.stock===0?`<div style="font-size:13px;color:#e74c3c;font-weight:600;margin-bottom:16px">❌ Stock Out - Currently Unavailable</div>`:`<div style="font-size:13px;color:var(--base);font-weight:600;margin-bottom:16px">✅ In Stock ${p.stock?`(${p.stock} units available)`:''}</div>`}
       <div style="margin-bottom:18px">
         <label style="font-size:13px;font-weight:600;display:block;margin-bottom:8px">Quantity:</label>
         <div class="qty-ctrl">
@@ -1108,7 +1125,7 @@ async function initPD(pid){
         </div>
       </div>
       <div style="display:flex;gap:11px;margin-bottom:18px">
-        <button onclick="pdCart()" class="atc-btn" style="flex:1;padding:13px;font-size:14px;font-weight:600"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        ${p.stock===0?`<button class="atc-btn" style="flex:1;padding:13px;font-size:14px;font-weight:600;background:#aaa;cursor:not-allowed;opacity:.7" disabled><i class="fa-solid fa-ban"></i> Stock Out</button>`:`<button onclick="pdCart()" class="atc-btn" style="flex:1;padding:13px;font-size:14px;font-weight:600"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>`}
         <button onclick="pdBuy()" style="flex:1;background:#e65100;color:#fff;border:none;padding:13px;border-radius:7px;font-size:14px;cursor:pointer;font-weight:600"><i class="fa-solid fa-bolt"></i> Buy Now</button>
       </div>
       <div style="display:flex;gap:10px;margin-bottom:16px">
@@ -1302,6 +1319,73 @@ window.sendMsg=async()=>{
   }catch(e){toast('Failed to send. Please call us directly.','error');}
   finally{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send Message';}
 };
+
+// ─── SEED DEFAULT PRODUCTS ───────────────────────────────────────────────────
+async function seedDefaultProducts(){
+  try{
+    const BASE='https://genuine.social/storage/app/public/product/thumbnail/';
+    const catDefs=[
+      {name:'Nutrition Food',icon:'🥗'},
+      {name:'Preventive Food',icon:'🛡️'},
+      {name:'Beauty Care Product',icon:'✨'},
+      {name:'ORAL CARE',icon:'🦷'},
+      {name:'Oil',icon:'🫙'},
+      {name:'Miracle Food',icon:'⭐'},
+    ];
+    const cats={};
+    const cSnap=await get(ref(db,'categories'));
+    if(!cSnap.exists()){
+      for(const c of catDefs){
+        const r=await push(ref(db,'categories'),{name:c.name,icon:c.icon,status:'active',createdAt:new Date().toISOString()});
+        cats[c.name]=r.key;
+      }
+    }else{
+      cSnap.forEach(c=>{cats[c.val().name]=c.key;});
+    }
+    const products=[
+      {name:'CHANDER PAHAR (ANONDHO JATRA PACK)',cat:'Nutrition Food',price:700,disc:500,img:'2026-04-18-69e3ae2423af6.webp',featured:true,stock:100,desc:'Special health nutrition pack from Genuine Social. A complete wellness package.'},
+      {name:'CHANDER PAHAR (SHOOK NIDRA PACK)',cat:'Nutrition Food',price:500,disc:375,img:'2026-04-18-69e3aead81072.webp',featured:true,stock:100,desc:'Healthy sleep nutrition pack from Genuine Social. Promotes quality sleep.'},
+      {name:'GENUINE PAIN RELIF DUBBLE ACTION PACK',cat:'Preventive Food',price:17,disc:14,img:'2025-06-03-683ed882c5d67.png',featured:true,stock:100,desc:'Double action pain relief pack. Fast and effective natural pain management.'},
+      {name:'GENUINE FACIAL WASH',cat:'Beauty Care Product',price:7,disc:6,img:'2025-06-03-683ed781f3518.png',featured:true,stock:100,desc:'Genuine facial wash for clean and glowing skin. Made with natural ingredients.'},
+      {name:'DIA GURD',cat:'Preventive Food',price:10,disc:8,img:'2025-03-08-67cc03e43d6ba.png',featured:false,stock:100,desc:'Dia Gurd preventive health supplement. Supports digestive health.'},
+      {name:'POWER BOOSTER',cat:'Nutrition Food',price:42,disc:37,img:'2024-12-11-6758bbb5aa2c8.png',featured:true,stock:100,desc:'Power Booster nutritional supplement. Enhances energy and stamina naturally.'},
+      {name:'GENUINE PAPAYA',cat:'Nutrition Food',price:5,disc:4,img:'2024-12-11-6758ba9917a10.png',featured:false,stock:100,desc:'Genuine Papaya supplement. Rich in enzymes and natural nutrients.'},
+      {name:'GENUINE JUICE',cat:'Nutrition Food',price:7,disc:6,img:'2024-12-11-6758b99befe3c.png',featured:false,stock:100,desc:'Genuine health juice. A blend of natural fruits and wellness ingredients.'},
+      {name:'GENUINE FITNESS & NUTRITION',cat:'Nutrition Food',price:11,disc:9,img:'2024-12-11-67589d0e169c9.png',featured:false,stock:100,desc:'Genuine fitness and nutrition supplement. Complete health support formula.'},
+      {name:'MOUTH CLEANSER',cat:'ORAL CARE',price:3,disc:2,img:'2024-12-11-6758b8acc5683.png',featured:false,stock:100,desc:'Mouth Cleanser for fresh breath and oral hygiene. Natural formula.'},
+      {name:'FLAXSEED OIL',cat:'Oil',price:17,disc:14,img:'2024-12-11-67589f5b79f36.png',featured:false,stock:100,desc:'Pure Flaxseed Oil. Rich in omega-3 fatty acids for heart health.'},
+      {name:'POWER X',cat:'Preventive Food',price:10,disc:8,img:'2024-12-04-67503dae16be1.png',featured:false,stock:100,desc:'Power X health supplement. Supports immunity and overall wellbeing.'},
+      {name:'ZERO RELIEF PAIN',cat:'Preventive Food',price:10,disc:8,img:'2024-12-11-6758b6564781e.png',featured:false,stock:100,desc:'Zero Relief Pain natural remedy. Effective pain management supplement.'},
+      {name:'ALL ROUNDER OIL',cat:'Oil',price:9,disc:7,img:'2024-12-11-675883ca2d660.png',featured:false,stock:100,desc:'All Rounder Oil for multiple health benefits. Multi-purpose wellness oil.'},
+      {name:'FIT & SLIM',cat:'Nutrition Food',price:11,disc:9,img:'2024-12-11-67589e4453d3c.png',featured:false,stock:100,desc:'Fit & Slim weight management supplement. Natural slimming formula.'},
+      {name:'OMEGA FISH OIL',cat:'Oil',price:12,disc:10,img:'2024-12-11-6758acad66c4a.png',featured:false,stock:100,desc:'Omega Fish Oil supplement. High-quality omega-3 for brain and heart health.'},
+      {name:'CALMIX',cat:'Nutrition Food',price:5,disc:4,img:'2024-12-11-6758a9e5c681a.png',featured:false,stock:100,desc:'Calmix calming nutrition supplement. Promotes relaxation and mental clarity.'},
+      {name:'VITA LIFE',cat:'Nutrition Food',price:10,disc:8,img:'2024-12-11-6758a5f89b794.png',featured:false,stock:100,desc:'Vita Life vitamin supplement. Complete daily nutrition support.'},
+      {name:'SOY CHOCOLATE',cat:'Nutrition Food',price:6,disc:5,img:'2024-12-11-6758a7cce461b.png',featured:false,stock:100,desc:'Soy Chocolate health drink. Protein-rich chocolate flavored nutrition.'},
+      {name:'BIO NUTRI',cat:'Nutrition Food',price:85,disc:75,img:'2024-12-11-6758b78425cc2.png',featured:false,stock:0,desc:'Bio Nutri premium nutritional supplement. Advanced bio-available formula.'},
+      {name:'SOY GOLD',cat:'Nutrition Food',price:6,disc:5,img:'2024-12-11-6758a71642b9c.png',featured:false,stock:100,desc:'Soy Gold premium soy protein supplement. High-quality plant protein.'},
+      {name:'CLEANSING DETOX',cat:'Preventive Food',price:7,disc:6,img:'2024-12-04-67503b75c6d7e.png',featured:false,stock:100,desc:'Cleansing Detox body purification supplement. Natural detox formula.'},
+      {name:'PILES CARE',cat:'Preventive Food',price:12,disc:10,img:'2024-12-11-675889ff056ce.png',featured:false,stock:100,desc:'Piles Care natural supplement. Effective relief from piles discomfort.'},
+      {name:'GENUINE MASALA TEA',cat:'Preventive Food',price:6,disc:5,img:'2024-12-11-6758a2c5736da.png',featured:false,stock:100,desc:'Genuine Masala Tea health drink. Aromatic herbal tea with wellness benefits.'},
+      {name:'CARDIO FOOD',cat:'Preventive Food',price:34,disc:29,img:'2024-12-11-675888d8f289f.png',featured:false,stock:100,desc:'Cardio Food heart health supplement. Supports cardiovascular wellness.'},
+      {name:'LUNGS REFRESHER',cat:'Preventive Food',price:12,disc:10,img:'2024-12-11-6758a18b89571.png',featured:false,stock:100,desc:'Lungs Refresher respiratory health supplement. Supports lung function naturally.'},
+      {name:'DIA CAP',cat:'Preventive Food',price:9,disc:8,img:'2024-12-11-6758aae18cc79.png',featured:false,stock:100,desc:'Dia Cap diabetes support supplement. Helps maintain healthy blood sugar levels.'},
+    ];
+    for(const p of products){
+      const catId=cats[p.cat]||'';
+      const imgUrl=BASE+p.img;
+      await push(ref(db,'products'),{
+        name:p.name,categoryId:catId,category:p.cat,
+        price:p.price,discountPrice:p.disc||null,
+        stock:p.stock,status:'active',featured:p.featured||false,
+        description:p.desc||'',fullDescription:'',
+        images:[imgUrl],imageUrl:imgUrl,
+        rating:4,reviewCount:0,
+        createdAt:new Date().toISOString(),updatedAt:new Date().toISOString()
+      });
+    }
+  }catch(e){console.error('Seed error:',e);}
+}
 
 // ─── INIT ────────────────────────────────────────────────────────────────────
 updateBadges();
