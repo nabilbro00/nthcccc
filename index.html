@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nodir Tir Health Care</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--base:#0c6447;--base2:#003d17;--base3:#e8f5ee;--accent:#ff6b35;--text:#222;--gray:#777;--border:#e5e7eb;--shadow:0 2px 12px rgba(0,0,0,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;color:var(--text);background:#f5f7f5;font-size:14px}
+a{text-decoration:none;color:inherit;cursor:pointer}
+img{max-width:100%}
+button{cursor:pointer}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:#f1f1f1}
+::-webkit-scrollbar-thumb{background:var(--base);border-radius:4px}
+
+/* TOPBAR */
+.topbar{background:var(--base2);color:#d4edda;padding:5px 0;font-size:12px}
+.topbar .wr{display:flex;justify-content:space-between;align-items:center}
+.topbar a{color:#d4edda;font-size:12px;transition:color .2s}
+.topbar a:hover{color:#fff}
+.tb-r{display:flex;gap:16px;align-items:center}
+.tb-r a{display:flex;align-items:center;gap:4px}
+
+/* HEADER */
+.header{background:#fff;border-bottom:2px solid var(--base);position:sticky;top:0;z-index:900;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+.header-inner{display:flex;align-items:center;gap:12px;padding:10px 0;min-height:68px}
+.brand{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer;text-decoration:none}
+.brand-logo{height:52px;width:auto;max-width:130px;object-fit:contain;border-radius:4px}
+.brand-logo-placeholder{width:46px;height:46px;background:var(--base);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-logo-placeholder span{font-size:22px;font-weight:700;color:#fff}
+.brand-text{}
+.brand-name{font-size:16px;font-weight:800;color:var(--base);line-height:1.2;letter-spacing:-.3px}
+.brand-tag{font-size:11px;color:var(--gray);margin-top:1px}
+
+.search-form{flex:1;display:flex;max-width:540px;margin:0 12px}
+.search-wrap{display:flex;flex:1;border:2px solid var(--base);border-radius:8px;overflow:hidden;transition:box-shadow .2s}
+.search-wrap:focus-within{box-shadow:0 0 0 3px rgba(12,100,71,.12)}
+.search-cat{background:#f0f9f4;border:none;border-right:1px solid #c8e6d4;padding:0 12px;font-size:12px;color:#444;outline:none;min-width:100px;cursor:pointer}
+.search-inp{flex:1;border:none;padding:9px 14px;font-size:13.5px;outline:none;color:#333}
+.search-btn{background:var(--base);color:#fff;border:none;padding:9px 18px;font-size:15px;transition:background .2s}
+.search-btn:hover{background:var(--base2)}
+
+.hdr-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+.hbtn{display:flex;flex-direction:column;align-items:center;gap:2px;color:#555;font-size:11px;padding:6px 10px;border-radius:8px;transition:all .2s;position:relative;text-decoration:none;border:none;background:transparent}
+.hbtn:hover{background:var(--base3);color:var(--base)}
+.hbtn i{font-size:19px}
+.hbtn-label{font-size:10.5px;white-space:nowrap}
+.cart-hbtn{background:var(--base);color:#fff;border-radius:8px;padding:7px 13px;gap:4px;flex-direction:row;font-size:13px;font-weight:500}
+.cart-hbtn:hover{background:var(--base2);color:#fff}
+.cart-hbtn i{font-size:17px}
+.badge{position:absolute;top:-4px;right:-4px;background:#e74c3c;color:#fff;border-radius:50%;width:18px;height:18px;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.cart-hbtn .badge{position:static;background:rgba(255,255,255,.3);margin-left:2px;width:20px;height:20px}
+
+/* NAVBAR */
+.navbar{background:var(--base)}
+.navbar .wr{display:flex;align-items:center;gap:0}
+.nav-links{display:flex;list-style:none;flex:1}
+.nav-links a{color:rgba(255,255,255,.9);padding:10px 14px;font-size:13px;display:flex;align-items:center;gap:5px;transition:background .2s;white-space:nowrap;font-weight:500}
+.nav-links a:hover,.nav-links a.active{background:rgba(255,255,255,.15);color:#fff}
+.nav-links a.active{border-bottom:3px solid #fff}
+.nav-r{display:flex;align-items:center;gap:0}
+.nav-r a{color:rgba(255,255,255,.85);padding:10px 13px;font-size:12.5px;transition:background .2s}
+.nav-r a:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* MARQUEE */
+.marquee-bar{background:#f0f9f4;border-top:1px solid #c8e6d4;border-bottom:1px solid #c8e6d4;overflow:hidden;padding:6px 0}
+.mq-inner{display:flex;gap:52px;animation:mq 32s linear infinite;white-space:nowrap}
+.mq-item{font-size:12.5px;color:var(--base2);display:inline-flex;align-items:center;gap:6px;font-weight:500}
+@keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* CONTAINER */
+.wr{max-width:1200px;margin:0 auto;padding:0 16px}
+
+/* PAGE SHOW/HIDE */
+.page{display:none}
+.page.active{display:block}
+
+/* SECTION */
+.sec{padding:28px 0}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--base)}
+.sec-title{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px;color:var(--base2)}
+.sec-title::before{content:'';width:4px;height:20px;background:var(--base);border-radius:2px;display:block}
+.view-all{color:var(--base);font-size:12.5px;border:1px solid var(--base);padding:5px 14px;border-radius:20px;transition:all .2s;font-weight:500}
+.view-all:hover{background:var(--base);color:#fff}
+
+/* PAGE HERO */
+.pg-hero{background:linear-gradient(130deg,var(--base),var(--base2));color:#fff;padding:22px 0}
+.pg-hero h1{font-size:22px;font-weight:700}
+.pg-hero p{font-size:13px;opacity:.8;margin-top:3px}
+
+/* HERO GRID */
+.hero-grid{display:grid;grid-template-columns:220px 1fr;gap:16px;margin:16px 0 0}
+
+/* CAT SIDEBAR */
+.cat-sb{background:#fff;border-radius:10px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border)}
+.cat-sb-hd{background:var(--base);color:#fff;padding:12px 16px;font-size:13.5px;font-weight:700;display:flex;align-items:center;gap:7px}
+.cat-sb-item{display:flex;align-items:center;gap:9px;padding:9px 16px;font-size:13px;color:#444;border-bottom:1px solid #f5f5f5;transition:all .15s;cursor:pointer}
+.cat-sb-item:hover{background:#f0f9f4;color:var(--base);padding-left:20px}
+.cat-sb-item i{color:var(--base);width:14px}
+
+/* HERO SLIDER */
+.slider{border-radius:10px;overflow:hidden;position:relative;background:#e8f5ee;min-height:320px}
+.slide{display:none;position:relative}
+.slide.active{display:block}
+.slide img{width:100%;height:370px;object-fit:cover;display:block}
+.slide-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,.4);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:14px;z-index:5;transition:background .2s}
+.slide-nav:hover{background:rgba(0,0,0,.65)}
+.sl-prev{left:10px}.sl-next{right:10px}
+.sl-dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.sl-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.5);border:none;transition:background .2s}
+.sl-dot.active{background:#fff;width:20px;border-radius:4px}
+
+/* FEATURES */
+.features{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:14px 0 0}
+.feat{background:#fff;border-radius:10px;padding:14px;display:flex;align-items:center;gap:11px;border:1px solid var(--border);transition:box-shadow .2s}
+.feat:hover{box-shadow:var(--shadow)}
+.feat-ic{width:44px;height:44px;background:var(--base3);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--base);font-size:20px;flex-shrink:0}
+.feat-txt strong{font-size:13px;color:#222;display:block}
+.feat-txt span{font-size:11.5px;color:var(--gray)}
+
+/* CAT GRID */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:12px}
+.cat-card{background:#fff;border-radius:10px;padding:16px 10px;text-align:center;border:1px solid var(--border);transition:all .22s;cursor:pointer;display:block}
+.cat-card:hover{border-color:var(--base);transform:translateY(-3px);box-shadow:0 6px 18px rgba(12,100,71,.1)}
+.cat-ic{font-size:30px;display:block;margin-bottom:7px}
+.cat-nm{font-size:12px;font-weight:600;color:#333}
+.cat-card:hover .cat-nm{color:var(--base)}
+
+/* PRODUCT CARD */
+.prod-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.prod-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);transition:all .25s;position:relative}
+.prod-card:hover{box-shadow:0 8px 24px rgba(12,100,71,.12);transform:translateY(-4px)}
+.prod-img{height:200px;background:#f9f9f9;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.prod-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
+.prod-card:hover .prod-img img{transform:scale(1.06)}
+.prod-badge{position:absolute;top:8px;left:8px;background:var(--accent);color:#fff;font-size:11px;padding:3px 8px;border-radius:4px;font-weight:700;z-index:2}
+.prod-badge.new{background:var(--base)}
+.wish-btn{position:absolute;top:8px;right:8px;background:#fff;border:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:14px;box-shadow:0 1px 6px rgba(0,0,0,.12);transition:all .2s;z-index:2}
+.wish-btn.on,.wish-btn:hover{color:#e74c3c;transform:scale(1.1)}
+.prod-body{padding:11px}
+.prod-nm{font-size:13px;font-weight:600;color:#333;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:36px;cursor:pointer;transition:color .2s}
+.prod-nm:hover{color:var(--base)}
+.stars{color:#f59e0b;font-size:11.5px}
+.stars span{color:#999;font-size:11px;margin-left:2px}
+.price-row{display:flex;align-items:center;gap:7px;margin:7px 0 9px}
+.price-now{font-size:16px;font-weight:800;color:var(--base)}
+.price-was{font-size:12px;color:#bbb;text-decoration:line-through}
+.atc-btn{width:100%;background:var(--base);color:#fff;border:none;padding:8px;border-radius:7px;font-size:12.5px;font-weight:500;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+.atc-btn:hover{background:var(--base2)}
+
+/* PROMO */
+.promo-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+.promo-img{width:100%;height:150px;object-fit:cover;border-radius:10px;display:block;border:1px solid var(--border)}
+
+/* FORMS */
+.form-card{background:#fff;border-radius:14px;padding:32px;box-shadow:var(--shadow);max-width:480px;margin:40px auto;border:1px solid var(--border)}
+.form-card h3{font-size:20px;font-weight:800;margin-bottom:3px}
+.form-sub{color:var(--gray);font-size:13px;margin-bottom:22px}
+.fg{margin-bottom:14px}
+.lbl{font-size:12.5px;font-weight:600;color:#444;margin-bottom:5px;display:block}
+.fc{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:7px;font-size:13.5px;outline:none;transition:border-color .2s;color:#333}
+.fc:focus{border-color:var(--base)}
+textarea.fc{resize:vertical;min-height:80px}
+.btn-pri{background:var(--base);color:#fff;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%;transition:background .2s}
+.btn-pri:hover{background:var(--base2)}
+.btn-pri:disabled{opacity:.6;cursor:not-allowed}
+.btn-out{background:transparent;color:var(--base);border:2px solid var(--base);padding:10px 22px;border-radius:8px;font-size:13.5px;cursor:pointer;transition:all .2s;font-weight:500}
+.btn-out:hover{background:var(--base);color:#fff}
+.link-gr{color:var(--base);font-size:13px;font-weight:500;cursor:pointer}
+.pwd-wr{position:relative}
+.pwd-eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:#999;cursor:pointer;font-size:14px;padding:0}
+
+/* CART */
+.cart-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:22px 0}
+.cart-tbl{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.cart-tbl th{background:var(--base);color:#fff;padding:11px 14px;font-size:12.5px;text-align:left}
+.cart-tbl td{padding:11px 14px;border-bottom:1px solid #f5f5f5;vertical-align:middle;font-size:13px}
+.cart-thumb{width:60px;height:60px;object-fit:cover;border-radius:7px;border:1px solid var(--border)}
+.qty-ctrl{display:flex;align-items:center;border:1.5px solid var(--border);border-radius:6px;overflow:hidden;width:fit-content}
+.qty-ctrl button{background:#f5f5f5;border:none;width:30px;height:30px;font-size:15px;transition:background .2s}
+.qty-ctrl button:hover{background:var(--base);color:#fff}
+.qty-ctrl input{width:40px;text-align:center;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);height:30px;font-size:13.5px;outline:none}
+
+/* SUMMARY BOX */
+.sum-box{background:#fff;border-radius:10px;padding:20px;border:1px solid var(--border)}
+.sum-box h5{font-size:15px;font-weight:700;border-bottom:2px solid var(--base);padding-bottom:8px;margin-bottom:13px}
+.sum-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:#555}
+.sum-total{font-size:16px;font-weight:800;color:var(--base);border-top:2px solid #f0f0f0;padding-top:10px;margin-top:6px;display:flex;justify-content:space-between}
+
+/* CHECKOUT */
+.co-layout{display:grid;grid-template-columns:1fr 320px;gap:22px;padding:22px 0}
+.co-section{background:#fff;border-radius:10px;padding:22px;border:1px solid var(--border);margin-bottom:16px}
+.co-sec-title{font-size:14px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:7px;color:var(--base2)}
+.pay-opt{display:flex;align-items:center;gap:11px;padding:12px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:500;transition:all .2s}
+.pay-opt:hover{border-color:var(--base);background:#f0f9f4}
+.pay-opt.selected{border-color:var(--base);background:#f0f9f4}
+input[type=radio]{accent-color:var(--base)}
+
+/* PD */
+.pd-layout{display:grid;grid-template-columns:1fr 1fr;gap:32px;background:#fff;border-radius:12px;padding:26px;border:1px solid var(--border);margin:22px 0}
+.pd-main-img{width:100%;max-height:380px;object-fit:contain;border-radius:8px;border:1px solid var(--border);background:#f9f9f9}
+.pd-thumbs{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.pd-thumb{width:62px;height:62px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;transition:border-color .2s}
+.pd-thumb.active{border-color:var(--base)}
+.pd-title{font-size:20px;font-weight:800;margin-bottom:8px;line-height:1.3}
+.pd-price-main{font-size:23px;font-weight:800;color:var(--base)}
+.pd-price-old{font-size:15px;text-decoration:line-through;color:#bbb;margin-left:8px}
+
+/* PROFILE */
+.prof-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;padding:22px 0}
+.prof-sb{background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border);height:fit-content}
+.prof-sb-top{padding:20px;text-align:center;background:#f0f9f4;border-bottom:1px solid var(--border)}
+.prof-av{width:64px;height:64px;background:var(--base);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;margin:0 auto 9px}
+.prof-nm{font-weight:700;font-size:14.5px}
+.prof-em{font-size:12px;color:var(--gray);margin-top:2px}
+.prof-nav a{display:flex;align-items:center;gap:9px;padding:11px 16px;font-size:13px;color:#444;border-bottom:1px solid #f5f5f5;transition:all .15s}
+.prof-nav a:hover,.prof-nav a.active{background:#f0f9f4;color:var(--base)}
+.prof-nav a.danger{color:#e74c3c}
+
+/* ORDERS */
+.ord-card{background:#fff;border-radius:10px;padding:16px;border:1px solid var(--border);margin-bottom:12px}
+.ord-status{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.s-pending{background:#fef3c7;color:#92400e}
+.s-processing{background:#dbeafe;color:#1d4ed8}
+.s-shipped{background:#d1fae5;color:#065f46}
+.s-delivered{background:#dcfce7;color:#15803d}
+.s-cancelled{background:#fee2e2;color:#b91c1c}
+
+/* TOAST */
+.toast-wr{position:fixed;top:74px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:9px}
+.toast{background:#fff;border-radius:8px;padding:12px 16px;box-shadow:0 4px 20px rgba(0,0,0,.14);display:flex;align-items:center;gap:9px;min-width:250px;animation:tsl .3s ease;font-size:13px}
+.toast.success{border-left:4px solid var(--base)}.toast.error{border-left:4px solid #e74c3c}.toast.info{border-left:4px solid #3b82f6}
+@keyframes tsl{from{transform:translateX(70px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* DROPDOWN */
+.drop-wr{position:relative}
+.drop-menu{position:absolute;top:calc(100%+6px);right:0;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.12);min-width:170px;padding:5px 0;z-index:800;display:none;border:1px solid var(--border)}
+.drop-menu.open{display:block}
+.drop-menu a{display:flex;align-items:center;gap:8px;padding:9px 16px;font-size:13px;color:#444;transition:background .15s}
+.drop-menu a:hover{background:#f0f9f4;color:var(--base)}
+.drop-menu .danger{color:#e74c3c}
+.drop-menu .danger:hover{background:#fee2e2;color:#b91c1c}
+
+/* EMPTY */
+.empty-box{text-align:center;padding:56px 20px;color:var(--gray)}
+.empty-box i{font-size:52px;opacity:.2;display:block;margin-bottom:13px}
+
+/* ABOUT */
+.ab-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center;margin:36px 0}
+.stat-row{display:flex;gap:26px;flex-wrap:wrap;margin-top:20px}
+.stat-num{font-size:26px;font-weight:800;color:var(--base)}
+.stat-lbl{font-size:12px;color:var(--gray)}
+.feat3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin:32px 0}
+.feat3-card{background:#fff;border-radius:12px;padding:24px;text-align:center;border:1px solid var(--border);transition:all .22s}
+.feat3-card:hover{border-color:var(--base);box-shadow:var(--shadow)}
+.feat3-ic{font-size:36px;margin-bottom:10px}
+.feat3-title{font-size:15px;font-weight:700;margin-bottom:6px}
+
+/* CONTACT */
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin:32px 0}
+.ct-info{background:#fff;border-radius:12px;padding:24px;border:1px solid var(--border)}
+.ct-item{display:flex;gap:13px;align-items:flex-start;margin-bottom:18px}
+.ct-ic{width:40px;height:40px;background:#f0f9f4;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--base);font-size:15px}
+
+/* MODAL */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9000;display:none;align-items:center;justify-content:center;padding:18px}
+.modal-ov.open{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:26px;max-width:440px;width:100%;animation:fup .25s ease}
+@keyframes fup{from{transform:translateY(22px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* BREADCRUMB */
+.bc{display:flex;align-items:center;gap:5px;list-style:none;font-size:12.5px;padding:10px 0;color:var(--gray)}
+.bc li a{color:var(--base)}.bc li::after{content:'/';color:#ccc;margin-left:5px}.bc li:last-child::after{display:none}
+
+/* SPIN */
+.spin{width:34px;height:34px;border:3px solid #eee;border-top-color:var(--base);border-radius:50%;animation:sp .8s linear infinite}
+.spin-box{display:flex;justify-content:center;padding:40px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+footer{background:#1a2e22;color:#a8bfb0;padding:44px 0 0;margin-top:44px}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.4fr;gap:34px}
+.ft-brand-nm{font-size:16px;font-weight:800;color:#fff;margin-bottom:9px}
+.ft-p{font-size:12.5px;line-height:1.8;margin-bottom:13px;color:#8fa898}
+.ft-socs{display:flex;gap:8px}
+.ft-soc{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:#ccc;font-size:13px;transition:all .2s;border:1px solid rgba(255,255,255,.1)}
+.ft-soc:hover{background:var(--base);color:#fff;border-color:var(--base)}
+.ft-title{color:#fff;font-size:13.5px;font-weight:700;margin-bottom:14px}
+.ft-links{list-style:none}
+.ft-links li{margin-bottom:7px}
+.ft-links a{color:#8fa898;font-size:12.5px;transition:all .2s}
+.ft-links a:hover{color:var(--base);padding-left:4px}
+.ft-contact p{font-size:12.5px;display:flex;gap:8px;margin-bottom:8px;color:#8fa898;align-items:flex-start}
+.ft-contact p i{color:var(--base);margin-top:2px;flex-shrink:0}
+.ft-btm{background:#0f1a12;padding:12px 0;text-align:center;font-size:12px;color:#5a7060;margin-top:36px}
+
+/* RESPONSIVE */
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr}.cat-sb{display:none}}
+@media(max-width:768px){.features{grid-template-columns:1fr 1fr}.prod-grid{grid-template-columns:repeat(2,1fr);gap:10px}.cart-layout{grid-template-columns:1fr}.co-layout{grid-template-columns:1fr}.pd-layout{grid-template-columns:1fr}.prof-layout{grid-template-columns:1fr}.ab-grid{grid-template-columns:1fr}.ct-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr 1fr}.feat3{grid-template-columns:1fr 1fr}.search-cat{display:none}}
+@media(max-width:480px){.features{grid-template-columns:1fr}.promo-grid{grid-template-columns:1fr}.ft-grid{grid-template-columns:1fr}.feat3{grid-template-columns:1fr}.hbtn-label{display:none}}
+</style>
+</head>
+<body>
+<div class="toast-wr" id="toast-wr"></div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="wr tb-top-inner">
+    <div><i class="fa-solid fa-location-dot"></i> <span id="tp-addr">Dhaka, Bangladesh</span></div>
+    <div class="tb-r">
+      <a id="tp-phone-lnk" href="tel:+8801892546979"><i class="fa-solid fa-phone"></i> <span id="tp-phone">+880 1892 54 69 79</span></a>
+      <a id="tb-login-a" onclick="nav('login')"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+      <a onclick="nav('register')"><i class="fa-solid fa-user-plus"></i> Register</a>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="wr">
+    <div class="header-inner">
+      <!-- BRAND with LOGO -->
+      <a class="brand" onclick="nav('home')">
+        <img id="h-logo" src="" alt="Logo" class="brand-logo" style="display:none">
+        <div class="brand-logo-placeholder" id="h-logo-ph">
+          <span id="h-logo-letter">N</span>
+        </div>
+        <div class="brand-text">
+          <div class="brand-name" id="h-site-nm">Nodir Tir Health Care</div>
+          <div class="brand-tag" id="h-tagline">Your Trusted Health Partner</div>
+        </div>
+      </a>
+
+      <!-- SEARCH -->
+      <form class="search-form" onsubmit="return doSearch(event)">
+        <div class="search-wrap">
+          <select class="search-cat" id="search-cat-sel">
+            <option value="">All Categories</option>
+          </select>
+          <input class="search-inp" id="search-inp" type="text" placeholder="Search health products, vitamins, supplements...">
+          <button class="search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+      </form>
+
+      <!-- ACTIONS -->
+      <div class="hdr-actions">
+        <a class="hbtn" onclick="nav('wishlist')">
+          <div style="position:relative"><i class="fa-regular fa-heart"></i><span class="badge" id="wish-badge">0</span></div>
+          <span class="hbtn-label">Wishlist</span>
+        </a>
+        <a class="hbtn cart-hbtn" onclick="nav('cart')">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span id="cart-total-hd">৳0</span>
+          <span class="badge" id="cart-badge">0</span>
+        </a>
+        <a class="hbtn" id="hdr-login-btn" onclick="nav('login')">
+          <i class="fa-regular fa-user"></i>
+          <span class="hbtn-label">Login</span>
+        </a>
+        <div class="drop-wr" id="hdr-user-btn" style="display:none">
+          <div class="hbtn" onclick="toggleDrop()">
+            <div id="hdr-av" style="width:34px;height:34px;background:var(--base);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px">U</div>
+          </div>
+          <div class="drop-menu" id="user-drop">
+            <a onclick="nav('profile')"><i class="fa-regular fa-user"></i> My Profile</a>
+            <a onclick="nav('orders')"><i class="fa-solid fa-list-ul"></i> My Orders</a>
+            <a onclick="nav('wishlist')"><i class="fa-regular fa-heart"></i> Wishlist</a>
+            <hr style="border:none;border-top:1px solid #f0f0f0;margin:4px 0">
+            <a class="danger" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="wr">
+    <ul class="nav-links">
+      <li><a id="nav-home" class="active" onclick="nav('home')"><i class="fa-solid fa-house"></i> Home</a></li>
+      <li><a id="nav-products" onclick="nav('products')"><i class="fa-solid fa-boxes-stacked"></i> All Products</a></li>
+      <li><a onclick="nav('about')"><i class="fa-solid fa-circle-info"></i> About Us</a></li>
+      <li><a onclick="nav('contact')"><i class="fa-solid fa-headset"></i> Contact</a></li>
+      <li><a onclick="nav('orders')"><i class="fa-solid fa-bag-shopping"></i> My Orders</a></li>
+    </ul>
+    <div class="nav-r">
+      <a id="tp-phone-nav" href="tel:+8801892546979"><i class="fa-solid fa-phone"></i> <span id="nav-phone">+880 1892 54 69 79</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- MARQUEE -->
+<div class="marquee-bar">
+  <div class="mq-inner" id="mq-inner">
+    <span class="mq-item">🌿 100% Natural Health Products</span>
+    <span class="mq-item">🚚 Fast Home Delivery</span>
+    <span class="mq-item">✅ Authentic Products Guaranteed</span>
+    <span class="mq-item">💊 Nutritional Supplements</span>
+    <span class="mq-item">💆 Beauty &amp; Wellness</span>
+    <span class="mq-item">🔥 Best Prices Guaranteed</span>
+    <span class="mq-item">🌿 100% Natural Health Products</span>
+    <span class="mq-item">🚚 Fast Home Delivery</span>
+    <span class="mq-item">✅ Authentic Products Guaranteed</span>
+    <span class="mq-item">💊 Nutritional Supplements</span>
+    <span class="mq-item">💆 Beauty &amp; Wellness</span>
+    <span class="mq-item">🔥 Best Prices Guaranteed</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════ HOME ══════════════════════════ -->
+<div class="page active" id="page-home">
+<div class="wr">
+  <div class="hero-grid">
+    <div class="cat-sb">
+      <div class="cat-sb-hd"><i class="fa-solid fa-bars"></i> All Categories</div>
+      <div id="sb-cats"><div style="padding:14px;color:var(--gray);font-size:13px">Loading...</div></div>
+    </div>
+    <div class="slider" id="hero-slider">
+      <div class="slide active"><img src="https://placehold.co/900x370/0c6447/fff?text=Nodir+Tir+Health+Care" alt="Banner"></div>
+      <button class="slide-nav sl-prev" onclick="slide(-1)">&#8249;</button>
+      <button class="slide-nav sl-next" onclick="slide(1)">&#8250;</button>
+      <div class="sl-dots" id="sl-dots"><button class="sl-dot active"></button></div>
+    </div>
+  </div>
+  <div class="features">
+    <div class="feat"><div class="feat-ic"><i class="fa-solid fa-truck-fast"></i></div><div class="feat-txt"><strong>Free Delivery</strong><span>Orders above ৳500</span></div></div>
+    <div class="feat"><div class="feat-ic"><i class="fa-solid fa-shield-halved"></i></div><div class="feat-txt"><strong>100% Authentic</strong><span>Genuine products</span></div></div>
+    <div class="feat"><div class="feat-ic"><i class="fa-solid fa-rotate-left"></i></div><div class="feat-txt"><strong>Easy Return</strong><span>7 day policy</span></div></div>
+    <div class="feat"><div class="feat-ic"><i class="fa-solid fa-headset"></i></div><div class="feat-txt"><strong>24/7 Support</strong><span>Always here for you</span></div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-title">Shop by Category</div><a class="view-all" onclick="nav('products')">View All</a></div>
+    <div class="cat-grid" id="home-cats"><div class="spin-box"><div class="spin"></div></div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-title">⭐ Featured Products</div><a class="view-all" onclick="nav('products')">View All</a></div>
+    <div class="prod-grid" id="feat-grid"><div class="spin-box"><div class="spin"></div></div></div>
+  </div>
+  <div class="promo-grid" id="promo-grid"></div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-title">🆕 New Arrivals</div><a class="view-all" onclick="nav('products')">View All</a></div>
+    <div class="prod-grid" id="new-grid"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ PRODUCTS ══════════════════════════ -->
+<div class="page" id="page-products">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-solid fa-boxes-stacked"></i> All Products</h1><p>Browse our complete health product collection</p></div></div>
+<div class="wr" style="padding-top:20px;padding-bottom:30px">
+  <div style="display:grid;grid-template-columns:230px 1fr;gap:20px">
+    <aside>
+      <div style="background:#fff;border-radius:10px;padding:17px;border:1px solid var(--border);position:sticky;top:74px">
+        <div style="font-size:14px;font-weight:800;border-bottom:2px solid var(--base);padding-bottom:9px;margin-bottom:14px;color:var(--base2)">🔍 Filters</div>
+        <div style="margin-bottom:16px">
+          <div style="font-size:11.5px;font-weight:700;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">CATEGORIES</div>
+          <div id="filter-cats-list"></div>
+        </div>
+        <div style="margin-bottom:16px">
+          <div style="font-size:11.5px;font-weight:700;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">PRICE RANGE</div>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input type="number" id="f-min" placeholder="Min" class="fc" style="padding:7px 8px;font-size:12px">
+            <span style="color:#ccc">—</span>
+            <input type="number" id="f-max" placeholder="Max" class="fc" style="padding:7px 8px;font-size:12px">
+          </div>
+          <button onclick="applyFilters()" style="background:var(--base);color:#fff;border:none;width:100%;padding:8px;border-radius:6px;margin-top:9px;font-size:13px;cursor:pointer;font-weight:500">Apply Filter</button>
+        </div>
+        <div>
+          <div style="font-size:11.5px;font-weight:700;color:#666;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">SORT BY</div>
+          <select id="f-sort" onchange="applyFilters()" class="fc" style="padding:8px">
+            <option value="">Default</option>
+            <option value="low">Price: Low → High</option>
+            <option value="high">Price: High → Low</option>
+            <option value="new">Newest First</option>
+          </select>
+        </div>
+        <button onclick="clearFilters()" style="background:transparent;color:#888;border:1px solid #ddd;width:100%;padding:7px;border-radius:6px;margin-top:12px;font-size:12.5px;cursor:pointer">✕ Clear Filters</button>
+      </div>
+    </aside>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:13px;flex-wrap:wrap;gap:9px">
+        <div id="results-count" style="font-size:13px;color:var(--gray)"></div>
+      </div>
+      <div class="prod-grid" id="all-prods-grid"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ PRODUCT DETAIL ══════════════════════════ -->
+<div class="page" id="page-product-detail">
+<div class="wr">
+  <ul class="bc"><li><a onclick="nav('home')">Home</a></li><li><a onclick="nav('products')">Products</a></li><li id="pd-bc">Product</li></ul>
+  <div id="pd-content"></div>
+  <div class="sec"><div class="sec-hd"><div class="sec-title">Related Products</div></div><div class="prod-grid" id="related-grid"></div></div>
+</div>
+</div>
+
+<!-- ══════════════════════════ CART ══════════════════════════ -->
+<div class="page" id="page-cart">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-solid fa-cart-shopping"></i> Shopping Cart</h1></div></div>
+<div class="wr"><div class="cart-layout"><div id="cart-items-c"></div><div id="cart-sum-c"></div></div></div>
+</div>
+
+<!-- ══════════════════════════ CHECKOUT ══════════════════════════ -->
+<div class="page" id="page-checkout">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-solid fa-credit-card"></i> Checkout</h1></div></div>
+<div class="wr">
+  <div class="co-layout">
+    <div>
+      <div class="co-section">
+        <h4 class="co-sec-title"><i class="fa-solid fa-user"></i> Contact Information</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="fg"><label class="lbl">Full Name *</label><input class="fc" id="co-name" placeholder="Your full name"></div>
+          <div class="fg"><label class="lbl">Phone *</label><input class="fc" id="co-phone" placeholder="+880..."></div>
+          <div class="fg" style="grid-column:1/-1"><label class="lbl">Email</label><input class="fc" id="co-email" type="email" placeholder="email@example.com"></div>
+        </div>
+      </div>
+      <div class="co-section">
+        <h4 class="co-sec-title"><i class="fa-solid fa-location-dot"></i> Shipping Address</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div class="fg" style="grid-column:1/-1"><label class="lbl">Street Address *</label><input class="fc" id="co-addr" placeholder="House #, Road #, Area"></div>
+          <div class="fg"><label class="lbl">City *</label><input class="fc" id="co-city" placeholder="Dhaka"></div>
+          <div class="fg"><label class="lbl">District</label><input class="fc" id="co-dist" placeholder="District"></div>
+          <div class="fg" style="grid-column:1/-1"><label class="lbl">Order Notes</label><textarea class="fc" id="co-notes" rows="2" placeholder="Any special instructions..."></textarea></div>
+        </div>
+      </div>
+      <div class="co-section">
+        <h4 class="co-sec-title"><i class="fa-solid fa-wallet"></i> Payment Method</h4>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <label class="pay-opt selected" id="pay-cod" onclick="selPay('cod',this)"><input type="radio" name="pay" value="cod" checked> 💵 Cash on Delivery</label>
+          <label class="pay-opt" id="pay-bkash" onclick="selPay('bkash',this)"><input type="radio" name="pay" value="bkash"> 📱 bKash Mobile Banking</label>
+          <label class="pay-opt" id="pay-nagad" onclick="selPay('nagad',this)"><input type="radio" name="pay" value="nagad"> 📱 Nagad Mobile Banking</label>
+        </div>
+        <div id="mbpay-info" style="display:none;margin-top:12px;padding:13px;background:#f0f9f4;border-radius:8px;border:1px solid #c8e6d4">
+          <p style="font-size:13px;color:var(--base);font-weight:600;margin-bottom:8px">📞 Send payment to: <span id="co-pay-num">+880 1892 54 69 79</span></p>
+          <div class="fg" style="margin-bottom:0"><label class="lbl">Transaction ID *</label><input class="fc" id="co-trx" placeholder="e.g. 8N5ABxxxxxx"></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="sum-box" style="position:sticky;top:74px">
+        <h5>Your Order</h5>
+        <div id="co-items-list" style="max-height:250px;overflow-y:auto;margin-bottom:13px"></div>
+        <div class="sum-row"><span>Subtotal</span><span id="co-sub">৳0</span></div>
+        <div class="sum-row"><span>Shipping</span><span id="co-ship">৳60</span></div>
+        <div class="sum-total"><span>Total</span><span id="co-tot">৳0</span></div>
+        <button onclick="placeOrder()" id="place-btn" style="width:100%;background:var(--base);color:#fff;border:none;padding:13px;border-radius:8px;font-size:14.5px;font-weight:700;cursor:pointer;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px"><i class="fa-solid fa-check"></i> Confirm Order</button>
+        <p style="font-size:11px;color:#bbb;text-align:center;margin-top:7px"><i class="fa-solid fa-lock"></i> Secure Checkout</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-ov" id="order-ok-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:56px;margin-bottom:13px">🎉</div>
+    <h2 style="font-size:20px;font-weight:800;color:var(--base);margin-bottom:5px">Order Confirmed!</h2>
+    <p style="color:var(--gray);font-size:13px;margin-bottom:5px">Thank you for your order. We'll deliver soon!</p>
+    <p style="font-size:12px;color:#bbb">Order ID: <strong id="ok-oid"></strong></p>
+    <button onclick="nav('orders')" style="background:var(--base);color:#fff;border:none;padding:11px 24px;border-radius:8px;margin-top:18px;cursor:pointer;font-size:14px;font-weight:600">View My Orders</button>
+    <button onclick="nav('home')" style="background:#f0f9f4;color:var(--base);border:none;padding:11px 24px;border-radius:8px;margin-top:9px;margin-left:8px;cursor:pointer;font-size:14px;font-weight:500">Continue Shopping</button>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ LOGIN ══════════════════════════ -->
+<div class="page" id="page-login">
+<div style="background:linear-gradient(135deg,#f0f9f4,#e8f5ee);min-height:calc(100vh - 230px);display:flex;align-items:center;justify-content:center;padding:28px 16px">
+  <div class="form-card" style="margin:0;width:100%">
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:46px;margin-bottom:10px">🔐</div>
+      <h3>Welcome Back!</h3><p class="form-sub">Sign in to your account</p>
+    </div>
+    <div class="fg"><label class="lbl">Email Address</label><input class="fc" id="l-email" type="email" placeholder="your@email.com"></div>
+    <div class="fg"><label class="lbl">Password</label>
+      <div class="pwd-wr"><input class="fc" id="l-pass" type="password" placeholder="Your password" style="padding-right:42px"><button class="pwd-eye" type="button" onclick="togglePwd('l-pass',this)"><i class="fa-regular fa-eye"></i></button></div>
+    </div>
+    <div style="text-align:right;margin-bottom:16px"><a class="link-gr" onclick="doForgot()">Forgot password?</a></div>
+    <button class="btn-pri" id="login-btn" onclick="doLogin()"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+    <p style="text-align:center;margin-top:15px;font-size:13px;color:var(--gray)">Don't have an account? <a class="link-gr" onclick="nav('register')">Register Free</a></p>
+    <p style="text-align:center;margin-top:9px"><a class="link-gr" onclick="nav('home')"><i class="fa-solid fa-arrow-left"></i> Back to Home</a></p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ REGISTER ══════════════════════════ -->
+<div class="page" id="page-register">
+<div style="background:linear-gradient(135deg,#f0f9f4,#e8f5ee);min-height:calc(100vh - 230px);display:flex;align-items:center;justify-content:center;padding:28px 16px">
+  <div class="form-card" style="margin:0;max-width:500px;width:100%">
+    <div style="text-align:center;margin-bottom:22px"><div style="font-size:46px;margin-bottom:10px">👤</div><h3>Create Account</h3><p class="form-sub">Join Nodir Tir Health Care</p></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="fg"><label class="lbl">First Name *</label><input class="fc" id="r-fname" placeholder="First name"></div>
+      <div class="fg"><label class="lbl">Last Name</label><input class="fc" id="r-lname" placeholder="Last name"></div>
+    </div>
+    <div class="fg"><label class="lbl">Email *</label><input class="fc" id="r-email" type="email" placeholder="your@email.com"></div>
+    <div class="fg"><label class="lbl">Phone *</label><input class="fc" id="r-phone" placeholder="+880..."></div>
+    <div class="fg"><label class="lbl">Password *</label>
+      <div class="pwd-wr"><input class="fc" id="r-pass" type="password" placeholder="Min 6 characters" style="padding-right:42px"><button class="pwd-eye" type="button" onclick="togglePwd('r-pass',this)"><i class="fa-regular fa-eye"></i></button></div>
+    </div>
+    <div class="fg"><label class="lbl">Confirm Password *</label><input class="fc" id="r-cpass" type="password" placeholder="Repeat password"></div>
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:16px">
+      <input type="checkbox" id="r-terms" style="accent-color:var(--base);width:15px;height:15px">
+      <label for="r-terms" style="font-size:12.5px;color:#555">I agree to <span class="link-gr">Terms</span> &amp; <span class="link-gr">Privacy Policy</span></label>
+    </div>
+    <button class="btn-pri" id="reg-btn" onclick="doRegister()"><i class="fa-solid fa-user-plus"></i> Create Account</button>
+    <p style="text-align:center;margin-top:14px;font-size:13px">Already have account? <a class="link-gr" onclick="nav('login')">Login</a></p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ PROFILE ══════════════════════════ -->
+<div class="page" id="page-profile">
+<div class="pg-hero"><div class="wr"><h1>My Account</h1></div></div>
+<div class="wr">
+  <div class="prof-layout">
+    <div class="prof-sb">
+      <div class="prof-sb-top">
+        <div class="prof-av" id="prof-av">U</div>
+        <div class="prof-nm" id="prof-nm">Loading...</div>
+        <div class="prof-em" id="prof-em"></div>
+      </div>
+      <div class="prof-nav">
+        <a class="active"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a onclick="nav('orders')"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
+        <a onclick="nav('wishlist')"><i class="fa-regular fa-heart"></i> Wishlist</a>
+        <a class="danger" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+    <div>
+      <div style="background:#fff;border-radius:12px;padding:22px;border:1px solid var(--border);margin-bottom:16px">
+        <h4 style="font-size:15px;font-weight:700;margin-bottom:16px">Personal Information</h4>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:13px">
+          <div class="fg"><label class="lbl">Full Name</label><input class="fc" id="p-nm" placeholder="Your name"></div>
+          <div class="fg"><label class="lbl">Phone</label><input class="fc" id="p-ph" placeholder="+880..."></div>
+          <div class="fg" style="grid-column:1/-1"><label class="lbl">Email (cannot change)</label><input class="fc" id="p-em" readonly style="background:#f9f9f9;color:#999"></div>
+          <div class="fg" style="grid-column:1/-1"><label class="lbl">Address</label><input class="fc" id="p-addr" placeholder="Your address"></div>
+        </div>
+        <button onclick="saveProfile()" class="btn-pri" style="width:auto;padding:10px 24px"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      </div>
+      <div style="background:#fff;border-radius:12px;padding:22px;border:1px solid var(--border)">
+        <h4 style="font-size:15px;font-weight:700;margin-bottom:16px">Change Password</h4>
+        <div class="fg"><label class="lbl">New Password</label><input class="fc" id="new-pwd" type="password" placeholder="Min 6 characters"></div>
+        <div class="fg"><label class="lbl">Confirm Password</label><input class="fc" id="conf-pwd" type="password" placeholder="Repeat"></div>
+        <button onclick="changePassword()" class="btn-out"><i class="fa-solid fa-lock"></i> Update Password</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ ORDERS ══════════════════════════ -->
+<div class="page" id="page-orders">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-solid fa-bag-shopping"></i> My Orders</h1></div></div>
+<div class="wr">
+  <div class="prof-layout">
+    <div class="prof-sb">
+      <div class="prof-sb-top"><div class="prof-av" id="ord-av">U</div><div class="prof-nm" id="ord-nm">My Account</div></div>
+      <div class="prof-nav">
+        <a onclick="nav('profile')"><i class="fa-solid fa-user"></i> My Profile</a>
+        <a class="active"><i class="fa-solid fa-bag-shopping"></i> My Orders</a>
+        <a onclick="nav('wishlist')"><i class="fa-regular fa-heart"></i> Wishlist</a>
+        <a class="danger" onclick="doLogout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+      </div>
+    </div>
+    <div id="orders-c" style="padding:4px 0"></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ WISHLIST ══════════════════════════ -->
+<div class="page" id="page-wishlist">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-regular fa-heart"></i> My Wishlist</h1></div></div>
+<div class="wr sec"><div id="wishlist-c"></div></div>
+</div>
+
+<!-- ══════════════════════════ ABOUT ══════════════════════════ -->
+<div class="page" id="page-about">
+<div class="pg-hero"><div class="wr"><h1>About Us</h1><p>Learn more about Nodir Tir Health Care</p></div></div>
+<div class="wr">
+  <div class="ab-grid">
+    <div>
+      <h2 style="font-size:24px;font-weight:800;margin-bottom:13px">Welcome to <span style="color:var(--base)" id="ab-nm">Nodir Tir Health Care</span></h2>
+      <p style="font-size:14px;color:#555;line-height:1.85;margin-bottom:12px">We are dedicated to providing 100% authentic and high-quality health care products to our valued customers across Bangladesh. Our mission is to make premium health and wellness products accessible to everyone.</p>
+      <p style="font-size:14px;color:#555;line-height:1.85">From nutritional supplements to beauty care products, we offer a wide range of health solutions that are carefully sourced and verified for quality.</p>
+      <div class="stat-row">
+        <div><div class="stat-num">500+</div><div class="stat-lbl">Products</div></div>
+        <div><div class="stat-num">10K+</div><div class="stat-lbl">Customers</div></div>
+        <div><div class="stat-num">100%</div><div class="stat-lbl">Authentic</div></div>
+        <div><div class="stat-num">5+</div><div class="stat-lbl">Years</div></div>
+      </div>
+    </div>
+    <div style="background:var(--base3);border-radius:14px;padding:36px;text-align:center;border:1px solid #c8e6d4">
+      <div style="font-size:72px;margin-bottom:12px">🌿</div>
+      <h3 id="ab-nm2" style="font-size:18px;color:var(--base);font-weight:800">Nodir Tir Health Care</h3>
+      <p style="font-size:13px;color:var(--gray);margin-top:7px">Your Trusted Health Partner Since 2020</p>
+    </div>
+  </div>
+  <div class="feat3">
+    <div class="feat3-card"><div class="feat3-ic">🌿</div><div class="feat3-title">100% Natural</div><p style="font-size:13px;color:var(--gray)">We source only natural and organic health products for your wellbeing.</p></div>
+    <div class="feat3-card"><div class="feat3-ic">🚚</div><div class="feat3-title">Fast Delivery</div><p style="font-size:13px;color:var(--gray)">Quick and reliable delivery to your doorstep anywhere in Bangladesh.</p></div>
+    <div class="feat3-card"><div class="feat3-ic">✅</div><div class="feat3-title">Guaranteed Quality</div><p style="font-size:13px;color:var(--gray)">Every product verified and tested before reaching your hands.</p></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════ CONTACT ══════════════════════════ -->
+<div class="page" id="page-contact">
+<div class="pg-hero"><div class="wr"><h1><i class="fa-solid fa-headset"></i> Contact Us</h1><p>We're here to help!</p></div></div>
+<div class="wr">
+  <div class="ct-grid">
+    <div>
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid var(--border)">
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:18px">Send us a Message</h3>
+        <div class="fg"><label class="lbl">Name *</label><input class="fc" id="ct-name" placeholder="Your name"></div>
+        <div class="fg"><label class="lbl">Phone *</label><input class="fc" id="ct-phone" placeholder="+880..."></div>
+        <div class="fg"><label class="lbl">Email</label><input class="fc" id="ct-email" type="email" placeholder="email@example.com"></div>
+        <div class="fg"><label class="lbl">Message *</label><textarea class="fc" id="ct-msg" rows="5" placeholder="Your message..."></textarea></div>
+        <button onclick="sendMsg()" id="ct-btn" class="btn-pri"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+      </div>
+    </div>
+    <div>
+      <div class="ct-info">
+        <h4 style="font-size:15px;font-weight:700;margin-bottom:18px">Contact Information</h4>
+        <div class="ct-item"><div class="ct-ic"><i class="fa-solid fa-phone"></i></div><div><strong style="display:block;font-size:13px;margin-bottom:2px">Phone</strong><a id="ct-ph-d" style="color:var(--base)">+880 1892 54 69 79</a></div></div>
+        <div class="ct-item"><div class="ct-ic"><i class="fa-solid fa-envelope"></i></div><div><strong style="display:block;font-size:13px;margin-bottom:2px">Email</strong><span id="ct-em-d" style="color:var(--base)">info@nodirtir.com</span></div></div>
+        <div class="ct-item"><div class="ct-ic"><i class="fa-solid fa-location-dot"></i></div><div><strong style="display:block;font-size:13px;margin-bottom:2px">Address</strong><span id="ct-addr-d">Dhaka, Bangladesh</span></div></div>
+        <hr style="border:none;border-top:1px solid #f0f0f0;margin:14px 0">
+        <strong style="font-size:13px;display:block;margin-bottom:10px">Follow Us</strong>
+        <div style="display:flex;gap:9px">
+          <a id="ct-fb" class="ft-soc" href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a id="ct-ig" class="ft-soc" href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a id="ct-wa" class="ft-soc" href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a id="ct-yt" class="ft-soc" href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer id="main-footer">
+  <div class="wr">
+    <div class="ft-grid">
+      <div>
+        <div class="ft-brand-nm" id="ft-nm">Nodir Tir Health Care</div>
+        <p class="ft-p">Your trusted source for authentic health and wellness products. Quality nutrition and beauty care delivered to your doorstep across Bangladesh.</p>
+        <div class="ft-socs">
+          <a class="ft-soc" id="ft-fb" href="#" target="_blank"><i class="fa-brands fa-facebook-f"></i></a>
+          <a class="ft-soc" id="ft-ig" href="#" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+          <a class="ft-soc" id="ft-wa" href="#" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+          <a class="ft-soc" id="ft-yt" href="#" target="_blank"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+      <div>
+        <h5 class="ft-title">Quick Links</h5>
+        <ul class="ft-links">
+          <li><a onclick="nav('home')">Home</a></li>
+          <li><a onclick="nav('products')">Products</a></li>
+          <li><a onclick="nav('about')">About Us</a></li>
+          <li><a onclick="nav('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5 class="ft-title">My Account</h5>
+        <ul class="ft-links">
+          <li><a onclick="nav('login')">Login</a></li>
+          <li><a onclick="nav('register')">Register</a></li>
+          <li><a onclick="nav('profile')">My Profile</a></li>
+          <li><a onclick="nav('orders')">My Orders</a></li>
+          <li><a onclick="nav('wishlist')">Wishlist</a></li>
+        </ul>
+      </div>
+      <div class="ft-contact">
+        <h5 class="ft-title">Contact Us</h5>
+        <p><i class="fa-solid fa-phone"></i><span id="ft-ph">+880 1892 54 69 79</span></p>
+        <p><i class="fa-solid fa-envelope"></i><span id="ft-em">info@nodirtir.com</span></p>
+        <p><i class="fa-solid fa-location-dot"></i><span id="ft-addr">Dhaka, Bangladesh</span></p>
+        <div style="margin-top:14px">
+          <p style="font-size:12px;color:#5a7060;margin-bottom:7px">Payment Methods:</p>
+          <div style="display:flex;gap:7px;flex-wrap:wrap">
+            <span style="background:#fff;color:#333;padding:3px 10px;border-radius:4px;font-size:11.5px;font-weight:700">bKash</span>
+            <span style="background:#fff;color:#333;padding:3px 10px;border-radius:4px;font-size:11.5px;font-weight:700">Nagad</span>
+            <span style="background:#fff;color:#333;padding:3px 10px;border-radius:4px;font-size:11.5px;font-weight:700">Cash</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="ft-btm">© 2025 <span id="ft-nm2">Nodir Tir Health Care</span>. All Rights Reserved. Made with ❤️ in Bangladesh</div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword, updateProfile as fbUpdateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, get, set, push, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const FC={apiKey:"AIzaSyCZdx1gCMWeFiBzsOX6GHxOIut4jeZhUm4",authDomain:"nodir-tir-health-care.firebaseapp.com",databaseURL:"https://nodir-tir-health-care-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"nodir-tir-health-care",storageBucket:"nodir-tir-health-care.firebasestorage.app",messagingSenderId:"430479827978",appId:"1:430479827978:web:0ab9f85310b4b2c69debf3"};
+const app=initializeApp(FC);
+const auth=getAuth(app);
+const db=getDatabase(app);
+
+let currentUser=null,siteSettings={},cart=JSON.parse(localStorage.getItem('ntc_cart')||'[]'),wishlist=JSON.parse(localStorage.getItem('ntc_wish')||'[]'),allProds=[],allCats=[],currentProd=null,slideIdx=0,banners=[];
+
+// ─── TOAST ────────────────────────────────────────────────────────────────────
+window.toast=function(msg,type='success'){
+  const ic={success:'✅',error:'❌',info:'ℹ️'};
+  const t=document.createElement('div');t.className=`toast ${type}`;t.innerHTML=`<span>${ic[type]}</span><span>${msg}</span>`;
+  document.getElementById('toast-wr').appendChild(t);setTimeout(()=>t.remove(),3500);
+};
+
+// ─── NAV ────────────────────────────────────────────────────────────────────
+window.nav=function(page,data=null){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page)?.classList.add('active');
+  window.scrollTo(0,0);
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  document.getElementById('nav-'+page)?.classList.add('active');
+  document.getElementById('user-drop')?.classList.remove('open');
+  ({home:initHome,products:()=>initProds(data),'product-detail':()=>initPD(data),cart:initCart,checkout:initCheckout,profile:initProfile,orders:initOrders,wishlist:initWishlist,about:()=>{document.getElementById('ab-nm')&&(document.getElementById('ab-nm').textContent=siteSettings.siteName||'Nodir Tir Health Care');document.getElementById('ab-nm2')&&(document.getElementById('ab-nm2').textContent=siteSettings.siteName||'Nodir Tir Health Care');}})[page]?.();
+};
+window.toggleDrop=()=>document.getElementById('user-drop')?.classList.toggle('open');
+document.addEventListener('click',e=>{if(!e.target.closest('.drop-wr'))document.getElementById('user-drop')?.classList.remove('open');});
+
+// ─── SETTINGS ────────────────────────────────────────────────────────────────
+async function loadSettings(){
+  try{
+    const snap=await get(ref(db,'settings'));
+    if(!snap.exists())return;
+    siteSettings=snap.val();const s=siteSettings;
+    if(s.primaryColor){document.documentElement.style.setProperty('--base',s.primaryColor);}
+    if(s.secondaryColor){document.documentElement.style.setProperty('--base2',s.secondaryColor);}
+    const nm=s.siteName||'Nodir Tir Health Care';
+    document.querySelectorAll('#h-site-nm,#ft-nm,#ft-nm2,#ab-nm,#ab-nm2').forEach(el=>{if(el)el.textContent=nm;});
+    document.title=nm;
+    // LOGO - show from settings
+    if(s.logoUrl){
+      const logo=document.getElementById('h-logo');
+      const ph=document.getElementById('h-logo-ph');
+      logo.src=s.logoUrl;logo.style.display='block';
+      if(ph)ph.style.display='none';
+    } else {
+      const ph=document.getElementById('h-logo-ph');
+      const letter=document.getElementById('h-logo-letter');
+      if(ph)ph.style.display='flex';
+      if(letter)letter.textContent=(nm[0]||'N').toUpperCase();
+    }
+    if(s.tagline){document.getElementById('h-tagline')&&(document.getElementById('h-tagline').textContent=s.tagline);}
+    // phone
+    if(s.phone){
+      const ph=s.phone;
+      ['tp-phone','ft-ph','nav-phone'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=ph;});
+      ['tp-phone-lnk','tp-phone-nav'].forEach(id=>{const el=document.getElementById(id);if(el)el.href='tel:'+ph.replace(/\D/g,'');});
+      document.getElementById('ct-ph-d')&&(document.getElementById('ct-ph-d').textContent=ph);
+      document.getElementById('co-pay-num')&&(document.getElementById('co-pay-num').textContent=ph);
+    }
+    if(s.email){['ft-em','ct-em-d'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=s.email;});}
+    if(s.address){['ft-addr','ct-addr-d','tp-addr'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=s.address;});}
+    if(s.facebook){['ft-fb','ct-fb'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=s.facebook;});}
+    if(s.instagram){['ft-ig','ct-ig'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=s.instagram;});}
+    if(s.whatsapp){['ft-wa','ct-wa'].forEach(id=>{const el=document.getElementById(id);if(el)el.href='https://wa.me/'+s.whatsapp.replace(/\D/g,'');});}
+    if(s.youtube){['ft-yt','ct-yt'].forEach(id=>{const el=document.getElementById(id);if(el)el.href=s.youtube;});}
+  }catch(e){}
+}
+
+// ─── AUTH ────────────────────────────────────────────────────────────────────
+onAuthStateChanged(auth,async user=>{
+  currentUser=user;
+  const lb=document.getElementById('hdr-login-btn'),ub=document.getElementById('hdr-user-btn');
+  if(user){
+    lb.style.display='none';ub.style.display='flex';
+    const n=user.displayName||user.email?.split('@')[0]||'U';
+    document.getElementById('hdr-av').textContent=n[0].toUpperCase();
+    document.getElementById('tb-login-a').textContent=n.split(' ')[0];
+  }else{
+    lb.style.display='flex';ub.style.display='none';
+    document.getElementById('tb-login-a').textContent='Login';
+    document.getElementById('tb-login-a').onclick=()=>nav('login');
+  }
+});
+
+window.doLogin=async function(){
+  const email=document.getElementById('l-email').value.trim();
+  const pass=document.getElementById('l-pass').value;
+  if(!email||!pass){toast('Enter email & password','error');return;}
+  const btn=document.getElementById('login-btn');btn.disabled=true;btn.textContent='Logging in...';
+  try{
+    await signInWithEmailAndPassword(auth,email,pass);
+    toast('Login successful!');setTimeout(()=>nav('home'),700);
+  }catch(e){
+    const m={'auth/user-not-found':'No account found','auth/wrong-password':'Wrong password','auth/invalid-credential':'Invalid email or password','auth/invalid-email':'Invalid email','auth/too-many-requests':'Too many attempts, try later'};
+    toast(m[e.code]||e.message,'error');
+  }finally{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket"></i> Login';}
+};
+
+window.doRegister=async function(){
+  const fname=document.getElementById('r-fname').value.trim();
+  const email=document.getElementById('r-email').value.trim();
+  const phone=document.getElementById('r-phone').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  const cpass=document.getElementById('r-cpass').value;
+  if(!fname||!email||!phone||!pass){toast('Fill all required fields','error');return;}
+  if(pass!==cpass){toast('Passwords do not match','error');return;}
+  if(pass.length<6){toast('Password must be at least 6 characters','error');return;}
+  if(!document.getElementById('r-terms').checked){toast('Accept terms & conditions first','error');return;}
+  const btn=document.getElementById('reg-btn');btn.disabled=true;btn.textContent='Creating...';
+  try{
+    const lname=document.getElementById('r-lname').value.trim();
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await fbUpdateProfile(cred.user,{displayName:`${fname} ${lname}`.trim()});
+    await set(ref(db,`users/${cred.user.uid}`),{name:`${fname} ${lname}`.trim(),email,phone,role:'customer',createdAt:new Date().toISOString()});
+    toast('Account created successfully!');setTimeout(()=>nav('home'),700);
+  }catch(e){
+    const m={'auth/email-already-in-use':'Email already registered','auth/invalid-email':'Invalid email','auth/weak-password':'Password too weak'};
+    toast(m[e.code]||e.message,'error');
+  }finally{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-user-plus"></i> Create Account';}
+};
+
+window.doLogout=async()=>{await signOut(auth);toast('Logged out','info');nav('home');};
+window.doForgot=async()=>{
+  const email=document.getElementById('l-email').value.trim();
+  if(!email){toast('Enter your email first','error');return;}
+  try{await sendPasswordResetEmail(auth,email);toast('Reset email sent! Check inbox.');}
+  catch(e){toast(e.message,'error');}
+};
+window.togglePwd=(id,btn)=>{const i=document.getElementById(id);i.type=i.type==='password'?'text':'password';btn.innerHTML=i.type==='password'?'<i class="fa-regular fa-eye"></i>':'<i class="fa-regular fa-eye-slash"></i>';};
+
+// ─── CART ────────────────────────────────────────────────────────────────────
+function saveCart(){localStorage.setItem('ntc_cart',JSON.stringify(cart));updateBadges();}
+function saveWish(){localStorage.setItem('ntc_wish',JSON.stringify(wishlist));updateBadges();}
+function getTotal(){return cart.reduce((s,i)=>s+((i.discountPrice||i.price||0)*(i.qty||1)),0);}
+function updateBadges(){
+  const cq=cart.reduce((s,i)=>s+(i.qty||1),0);
+  document.getElementById('cart-badge').textContent=cq;
+  document.getElementById('wish-badge').textContent=wishlist.length;
+  const tot=getTotal();
+  document.getElementById('cart-total-hd').textContent='৳'+(tot?tot.toLocaleString():'0');
+}
+window.addToCart=function(pid){
+  const p=allProds.find(x=>x.id===pid);if(!p)return;
+  const idx=cart.findIndex(i=>i.id===pid);
+  if(idx>-1)cart[idx].qty=(cart[idx].qty||1)+1; else cart.push({...p,qty:1});
+  saveCart();toast(`"${p.name}" added to cart!`);
+};
+window.toggleWish=function(pid,btn){
+  const p=allProds.find(x=>x.id===pid);if(!p)return;
+  const idx=wishlist.findIndex(i=>i.id===pid);
+  if(idx>-1){wishlist.splice(idx,1);if(btn){btn.classList.remove('on');btn.innerHTML='<i class="fa-regular fa-heart"></i>';}}
+  else{wishlist.push(p);if(btn){btn.classList.add('on');btn.innerHTML='<i class="fa-solid fa-heart"></i>';}}
+  saveWish();toast(idx>-1?'Removed from wishlist':'Added to wishlist!',idx>-1?'info':'success');
+};
+function isWished(pid){return wishlist.some(i=>i.id===pid);}
+
+// ─── PRODUCT CARD ────────────────────────────────────────────────────────────
+function prodCard(p){
+  const disc=p.price&&p.discountPrice?Math.round((1-p.discountPrice/p.price)*100):0;
+  const img=(p.images&&p.images[0])||p.imageUrl||'https://placehold.co/300x300/f5f5f5/888?text=Product';
+  const inW=isWished(p.id);
+  const stars=Math.round(p.rating||4);
+  return`<div class="prod-card">
+    <div class="prod-img">
+      <img src="${img}" alt="${p.name}" loading="lazy" onclick="nav('product-detail','${p.id}')" style="cursor:pointer" onerror="this.src='https://placehold.co/300x300/f5f5f5/888?text=Product'">
+      ${disc>0?`<span class="prod-badge">-${disc}%</span>`:(p.isNew?'<span class="prod-badge new">NEW</span>':'')}
+      <button class="wish-btn ${inW?'on':''}" onclick="toggleWish('${p.id}',this)">${inW?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>'}</button>
+    </div>
+    <div class="prod-body">
+      <div class="prod-nm" onclick="nav('product-detail','${p.id}')">${p.name}</div>
+      <div style="margin-bottom:5px"><span class="stars">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span><span style="color:#999;font-size:11px;margin-left:3px">(${p.reviewCount||0})</span></div>
+      <div class="price-row">
+        <span class="price-now">৳${(p.discountPrice||p.price||0).toLocaleString()}</span>
+        ${p.discountPrice&&p.price?`<span class="price-was">৳${p.price.toLocaleString()}</span>`:''}
+      </div>
+      <button class="atc-btn" onclick="addToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+    </div>
+  </div>`;
+}
+
+// ─── HOME ────────────────────────────────────────────────────────────────────
+async function initHome(){
+  try{
+    const [catS,banS,pS]=await Promise.all([get(ref(db,'categories')),get(ref(db,'banners')),get(ref(db,'products'))]);
+    // categories
+    if(catS.exists()){
+      allCats=[];catS.forEach(c=>{if(c.val().status!=='inactive')allCats.push({id:c.key,...c.val()});});
+      document.getElementById('sb-cats').innerHTML=allCats.map(c=>`<div class="cat-sb-item" onclick="nav('products','cat:${c.id}')"><i class="fa-solid fa-chevron-right"></i> ${c.icon||''} ${c.name}</div>`).join('');
+      document.getElementById('home-cats').innerHTML=allCats.map(c=>`<a class="cat-card" onclick="nav('products','cat:${c.id}')"><span class="cat-ic">${c.icon||'🛒'}</span><div class="cat-nm">${c.name}</div></a>`).join('');
+      // populate search cat dropdown
+      const sel=document.getElementById('search-cat-sel');
+      allCats.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
+    }else{document.getElementById('sb-cats').innerHTML='<div style="padding:12px 16px;font-size:12.5px;color:#aaa">No categories yet</div>';document.getElementById('home-cats').innerHTML='<p style="color:#aaa">No categories</p>';}
+    // banners
+    if(banS.exists()){
+      banners=[];banS.forEach(b=>{if(b.val().status!=='inactive')banners.push({id:b.key,...b.val()});});
+      if(banners.length){
+        const hs=document.getElementById('hero-slider');
+        hs.innerHTML=banners.map((b,i)=>`<div class="slide${i===0?' active':''}"><a href="${b.link||'#'}"><img src="${b.imageUrl}" alt="${b.title||''}" style="width:100%;height:370px;object-fit:cover;display:block" onerror="this.src='https://placehold.co/900x370/0c6447/fff?text=Banner'"></a></div>`).join('')+
+          `<button class="slide-nav sl-prev" onclick="slide(-1)">&#8249;</button><button class="slide-nav sl-next" onclick="slide(1)">&#8250;</button><div class="sl-dots">${banners.map((_,i)=>`<button class="sl-dot${i===0?' active':''}" onclick="goSlide(${i})"></button>`).join('')}</div>`;
+        window.goSlide=i=>{document.querySelectorAll('.slide')[slideIdx].classList.remove('active');slideIdx=i;document.querySelectorAll('.slide')[i].classList.add('active');document.querySelectorAll('.sl-dot').forEach((d,j)=>d.classList.toggle('active',j===i));};
+        // promo from banners
+        if(banners.length>=2){document.getElementById('promo-grid').innerHTML=banners.slice(0,2).map(b=>`<a href="${b.link||'#'}"><img class="promo-img" src="${b.imageUrl}" alt="" onerror="this.style.display='none'"></a>`).join('');}
+      }
+    }
+    // products
+    if(pS.exists()){
+      allProds=[];pS.forEach(p=>allProds.push({id:p.key,...p.val()}));
+      allProds=allProds.filter(p=>p.status!=='inactive');
+      const featured=allProds.filter(p=>p.featured);
+      document.getElementById('feat-grid').innerHTML=(featured.length?featured:allProds).slice(0,8).map(prodCard).join('');
+      document.getElementById('new-grid').innerHTML=[...allProds].reverse().slice(0,8).map(prodCard).join('');
+    }else{
+      document.getElementById('feat-grid').innerHTML='<p style="color:#aaa;grid-column:1/-1;text-align:center;padding:40px">No products yet. Add from admin panel.</p>';
+    }
+  }catch(e){console.error(e);}
+}
+window.slide=d=>{
+  const slides=document.querySelectorAll('.slide');if(!slides.length)return;
+  slides[slideIdx].classList.remove('active');slideIdx=(slideIdx+d+slides.length)%slides.length;slides[slideIdx].classList.add('active');
+  document.querySelectorAll('.sl-dot').forEach((dot,j)=>dot.classList.toggle('active',j===slideIdx));
+};
+setInterval(()=>slide(1),4500);
+
+// ─── PRODUCTS ────────────────────────────────────────────────────────────────
+window._pf={};
+async function initProds(data=null){
+  if(data&&typeof data==='string'){if(data.startsWith('cat:'))window._pf.cat=data.replace('cat:','');else if(data.startsWith('search:'))window._pf.search=data.replace('search:','');}
+  if(!allProds.length){
+    try{const s=await get(ref(db,'products'));if(s.exists()){allProds=[];s.forEach(p=>allProds.push({id:p.key,...p.val()}));allProds=allProds.filter(p=>p.status!=='inactive');}
+    const cs=await get(ref(db,'categories'));if(cs.exists()){allCats=[];cs.forEach(c=>{if(c.val().status!=='inactive')allCats.push({id:c.key,...c.val()});});}
+    }catch(e){}
+  }
+  const fcl=document.getElementById('filter-cats-list');
+  fcl.innerHTML=`<label style="display:flex;gap:7px;align-items:center;margin-bottom:8px;font-size:12.5px;cursor:pointer"><input type="radio" name="fc" value="" style="accent-color:var(--base)" ${!window._pf.cat?'checked':''} onchange="filterCat('')"> All Categories</label>`+
+    allCats.map(c=>`<label style="display:flex;gap:7px;align-items:center;margin-bottom:8px;font-size:12.5px;cursor:pointer"><input type="radio" name="fc" value="${c.id}" style="accent-color:var(--base)" ${window._pf.cat===c.id?'checked':''} onchange="filterCat('${c.id}')"> ${c.icon||''} ${c.name}</label>`).join('');
+  if(window._pf.search){const si=document.getElementById('search-inp');if(si)si.value=window._pf.search;}
+  applyFilters();
+}
+window.filterCat=id=>{window._pf.cat=id||'';applyFilters();};
+window.clearFilters=()=>{window._pf={};document.getElementById('f-min').value='';document.getElementById('f-max').value='';document.getElementById('f-sort').value='';document.getElementById('search-inp').value='';document.querySelectorAll('input[name="fc"]')[0]?.click();applyFilters();};
+window.applyFilters=function(){
+  let prods=[...allProds];
+  const cat=window._pf.cat;
+  const q=(window._pf.search||(document.getElementById('search-inp')?.value.trim().toLowerCase()||''));
+  const min=parseFloat(document.getElementById('f-min')?.value)||0;
+  const max=parseFloat(document.getElementById('f-max')?.value)||Infinity;
+  const sort=document.getElementById('f-sort')?.value||'';
+  if(cat)prods=prods.filter(p=>p.categoryId===cat);
+  if(q)prods=prods.filter(p=>(p.name||'').toLowerCase().includes(q)||(p.description||'').toLowerCase().includes(q));
+  if(min>0)prods=prods.filter(p=>(p.discountPrice||p.price||0)>=min);
+  if(max<Infinity)prods=prods.filter(p=>(p.discountPrice||p.price||0)<=max);
+  if(sort==='low')prods.sort((a,b)=>(a.discountPrice||a.price||0)-(b.discountPrice||b.price||0));
+  else if(sort==='high')prods.sort((a,b)=>(b.discountPrice||b.price||0)-(a.discountPrice||a.price||0));
+  else if(sort==='new')prods.reverse();
+  const rc=document.getElementById('results-count');if(rc)rc.textContent=`Showing ${prods.length} products`;
+  const g=document.getElementById('all-prods-grid');
+  g.innerHTML=prods.length?prods.map(prodCard).join(''):'<div style="grid-column:1/-1;text-align:center;padding:60px;color:#aaa"><i class="fa-solid fa-magnifying-glass" style="font-size:44px;display:block;margin-bottom:14px;opacity:.25"></i><h4>No products found</h4><p style="font-size:13px;margin-top:6px">Try adjusting your filters</p></div>';
+};
+window.doSearch=function(e){
+  e.preventDefault();
+  const q=document.getElementById('search-inp')?.value.trim();
+  if(!q)return false;
+  window._pf={search:q.toLowerCase()};
+  nav('products','search:'+q);
+  return false;
+};
+
+// ─── PRODUCT DETAIL ──────────────────────────────────────────────────────────
+async function initPD(pid){
+  if(!pid)return;
+  currentProd=pid;
+  let p=allProds.find(x=>x.id===pid);
+  if(!p){try{const s=await get(ref(db,`products/${pid}`));if(s.exists())p={id:pid,...s.val()};}catch(e){}}
+  if(!p){document.getElementById('pd-content').innerHTML='<p style="color:red;padding:24px">Product not found</p>';return;}
+  document.getElementById('pd-bc').textContent=p.name;
+  document.title=p.name+' - '+(siteSettings.siteName||'Nodir Tir Health Care');
+  const imgs=(p.images&&p.images.length?p.images:(p.imageUrl?[p.imageUrl]:[]));
+  const disc=p.price&&p.discountPrice?Math.round((1-p.discountPrice/p.price)*100):0;
+  const stars=Math.round(p.rating||4);
+  document.getElementById('pd-content').innerHTML=`
+  <div class="pd-layout">
+    <div>
+      <img id="pd-main" src="${imgs[0]||'https://placehold.co/500x500/f5f5f5/888?text=Product'}" class="pd-main-img" onerror="this.src='https://placehold.co/500x500/f5f5f5/888?text=Product'" alt="${p.name}">
+      ${imgs.length>1?`<div class="pd-thumbs">${imgs.map((img,i)=>`<img src="${img}" class="pd-thumb${i===0?' active':''}" onclick="switchImg('${img}',this)" onerror="this.style.display='none'" alt="thumb">`).join('')}</div>`:''}
+    </div>
+    <div>
+      <h1 class="pd-title">${p.name}</h1>
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:13px">
+        <span style="color:#f59e0b;font-size:16px">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span>
+        <span style="color:#999;font-size:12px">(${p.reviewCount||0} reviews)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px;flex-wrap:wrap">
+        <span class="pd-price-main">৳${(p.discountPrice||p.price||0).toLocaleString()}</span>
+        ${p.discountPrice&&p.price?`<span class="pd-price-old">৳${p.price.toLocaleString()}</span><span class="prod-badge">-${disc}%</span>`:''}
+      </div>
+      ${p.description?`<p style="font-size:13.5px;color:#555;line-height:1.8;margin-bottom:16px">${p.description}</p>`:''}
+      <div style="font-size:13px;color:var(--base);font-weight:600;margin-bottom:16px">✅ In Stock ${p.stock?`(${p.stock} units available)`:''}</div>
+      <div style="margin-bottom:18px">
+        <label style="font-size:13px;font-weight:600;display:block;margin-bottom:8px">Quantity:</label>
+        <div class="qty-ctrl">
+          <button onclick="pdQ(-1)">−</button>
+          <input type="number" id="pd-qty" value="1" min="1" style="width:44px;text-align:center;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);height:30px;font-size:14px;outline:none">
+          <button onclick="pdQ(1)">+</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:11px;margin-bottom:18px">
+        <button onclick="pdCart()" class="atc-btn" style="flex:1;padding:13px;font-size:14px;font-weight:600"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+        <button onclick="pdBuy()" style="flex:1;background:#e65100;color:#fff;border:none;padding:13px;border-radius:7px;font-size:14px;cursor:pointer;font-weight:600"><i class="fa-solid fa-bolt"></i> Buy Now</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:16px">
+        <button onclick="toggleWish('${p.id}',this)" class="wish-btn ${isWished(p.id)?'on':''}" style="position:static;width:40px;height:40px;font-size:18px;border-radius:8px;background:#fee2e2">${isWished(p.id)?'<i class="fa-solid fa-heart"></i>':'<i class="fa-regular fa-heart"></i>'}</button>
+      </div>
+      ${p.sku?`<p style="font-size:12px;color:#aaa">SKU: ${p.sku}</p>`:''}
+    </div>
+  </div>
+  ${p.fullDescription||p.description?`<div style="background:#fff;border-radius:12px;padding:22px;border:1px solid var(--border);margin-top:18px"><h4 style="font-size:15px;font-weight:700;margin-bottom:12px">Product Description</h4><div style="font-size:13.5px;color:#555;line-height:1.85">${p.fullDescription||p.description}</div></div>`:''}`;
+  const rg=document.getElementById('related-grid');
+  const rel=allProds.filter(x=>x.id!==pid&&x.categoryId===p.categoryId).slice(0,4);
+  rg.innerHTML=rel.length?rel.map(prodCard).join(''):'<p style="color:#aaa;font-size:13px">No related products</p>';
+}
+window.switchImg=(src,el)=>{document.getElementById('pd-main').src=src;document.querySelectorAll('.pd-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');};
+window.pdQ=d=>{const i=document.getElementById('pd-qty');i.value=Math.max(1,(parseInt(i.value)||1)+d);};
+window.pdCart=()=>{
+  const p=allProds.find(x=>x.id===currentProd);if(!p)return;
+  const qty=parseInt(document.getElementById('pd-qty')?.value||1);
+  const idx=cart.findIndex(i=>i.id===p.id);
+  if(idx>-1)cart[idx].qty=(cart[idx].qty||1)+qty; else cart.push({...p,qty});
+  saveCart();toast(`"${p.name}" added to cart!`);
+};
+window.pdBuy=()=>{pdCart();nav('checkout');};
+
+// ─── CART ────────────────────────────────────────────────────────────────────
+function initCart(){
+  const cc=document.getElementById('cart-items-c'),cs=document.getElementById('cart-sum-c');
+  if(!cart.length){cc.innerHTML='<div class="empty-box"><i class="fa-solid fa-cart-shopping"></i><h4 style="font-size:17px;margin-bottom:6px">Your cart is empty</h4><p style="font-size:13px;margin-bottom:16px">Browse our products and add something!</p><button onclick="nav(\'products\')" class="btn-pri" style="width:auto;padding:10px 24px">Browse Products</button></div>';cs.innerHTML='';return;}
+  const ship=siteSettings.shippingCharge||60;const sub=getTotal();
+  cc.innerHTML=`<div style="overflow-x:auto"><table class="cart-tbl"><thead><tr><th>Product</th><th>Price</th><th>Quantity</th><th>Subtotal</th><th></th></tr></thead><tbody>
+  ${cart.map((item,i)=>`<tr>
+    <td><div style="display:flex;align-items:center;gap:11px"><img class="cart-thumb" src="${(item.images&&item.images[0])||item.imageUrl||'https://placehold.co/60?text=P'}" onerror="this.src='https://placehold.co/60?text=P'" alt=""><div><span onclick="nav('product-detail','${item.id}')" style="font-size:13px;font-weight:600;cursor:pointer;color:#222;display:block;max-width:200px">${item.name}</span></div></div></td>
+    <td>৳${(item.discountPrice||item.price||0).toLocaleString()}</td>
+    <td><div class="qty-ctrl"><button onclick="cQty(${i},-1)">−</button><input type="number" value="${item.qty||1}" min="1" onchange="setCQty(${i},this.value)"><button onclick="cQty(${i},1)">+</button></div></td>
+    <td><strong style="color:var(--base)">৳${((item.discountPrice||item.price||0)*(item.qty||1)).toLocaleString()}</strong></td>
+    <td><button onclick="rmCart(${i})" style="background:none;border:none;color:#e74c3c;font-size:17px;cursor:pointer"><i class="fa-solid fa-xmark"></i></button></td>
+  </tr>`).join('')}
+  </tbody></table></div>
+  <div style="display:flex;justify-content:space-between;margin-top:13px;flex-wrap:wrap;gap:9px">
+    <button onclick="nav('products')" class="btn-out" style="padding:9px 18px;font-size:13px"><i class="fa-solid fa-arrow-left"></i> Continue Shopping</button>
+    <button onclick="if(confirm('Clear all items?')){cart=[];saveCart();initCart();}" style="background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;padding:9px 16px;border-radius:7px;cursor:pointer;font-size:13px;font-weight:500"><i class="fa-solid fa-trash"></i> Clear Cart</button>
+  </div>`;
+  cs.innerHTML=`<div class="sum-box">
+    <h5>Order Summary</h5>
+    <div class="sum-row"><span>Items (${cart.length})</span><span>৳${sub.toLocaleString()}</span></div>
+    <div class="sum-row"><span>Shipping</span><span>৳${ship}</span></div>
+    <div class="sum-total"><span>Total</span><span>৳${(sub+ship).toLocaleString()}</span></div>
+    <button onclick="nav('checkout')" style="width:100%;background:var(--base);color:#fff;border:none;padding:13px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px"><i class="fa-solid fa-credit-card"></i> Proceed to Checkout</button>
+  </div>`;
+}
+window.cQty=(i,d)=>{cart[i].qty=Math.max(1,(cart[i].qty||1)+d);saveCart();initCart();};
+window.setCQty=(i,v)=>{cart[i].qty=Math.max(1,parseInt(v)||1);saveCart();initCart();};
+window.rmCart=(i)=>{cart.splice(i,1);saveCart();toast('Item removed','info');initCart();};
+
+// ─── CHECKOUT ────────────────────────────────────────────────────────────────
+function initCheckout(){
+  if(!cart.length){nav('cart');return;}
+  const ship=siteSettings.shippingCharge||60;const sub=getTotal();
+  if(currentUser){
+    document.getElementById('co-email').value=currentUser.email||'';
+    get(ref(db,`users/${currentUser.uid}`)).then(s=>{if(s.exists()){const d=s.val();if(d.name)document.getElementById('co-name').value=d.name;if(d.phone)document.getElementById('co-phone').value=d.phone;if(d.address)document.getElementById('co-addr').value=d.address;}});
+  }
+  document.getElementById('co-items-list').innerHTML=cart.map(i=>`<div style="display:flex;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid #f2f2f2">
+    <img src="${(i.images&&i.images[0])||i.imageUrl||'https://placehold.co/46?text=P'}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0" onerror="this.src='https://placehold.co/46?text=P'" alt="">
+    <div style="flex:1"><div style="font-size:12.5px;font-weight:600">${i.name}</div><div style="font-size:11px;color:#aaa">Qty: ${i.qty||1}</div></div>
+    <strong style="font-size:13px;color:var(--base)">৳${((i.discountPrice||i.price||0)*(i.qty||1)).toLocaleString()}</strong>
+  </div>`).join('');
+  document.getElementById('co-sub').textContent='৳'+sub.toLocaleString();
+  document.getElementById('co-ship').textContent='৳'+ship;
+  document.getElementById('co-tot').textContent='৳'+(sub+ship).toLocaleString();
+}
+window.selPay=function(method,el){
+  document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  document.querySelectorAll('input[name="pay"]').forEach(r=>r.checked=r.value===method);
+  document.getElementById('mbpay-info').style.display=(method==='bkash'||method==='nagad')?'block':'none';
+};
+window.placeOrder=async function(){
+  const name=document.getElementById('co-name').value.trim();
+  const phone=document.getElementById('co-phone').value.trim();
+  const addr=document.getElementById('co-addr').value.trim();
+  const city=document.getElementById('co-city').value.trim();
+  const pay=document.querySelector('input[name="pay"]:checked')?.value||'cod';
+  if(!name||!phone||!addr||!city){toast('Please fill all required fields','error');return;}
+  if((pay==='bkash'||pay==='nagad')&&!document.getElementById('co-trx').value.trim()){toast('Enter Transaction ID','error');return;}
+  const btn=document.getElementById('place-btn');btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-circle-notch fa-spin"></i> Placing order...';
+  const sub=getTotal();const ship=siteSettings.shippingCharge||60;
+  const order={customerName:name,phone,email:document.getElementById('co-email').value.trim(),address:`${addr}, ${city}${document.getElementById('co-dist').value.trim()?', '+document.getElementById('co-dist').value.trim():''}`,notes:document.getElementById('co-notes').value.trim(),paymentMethod:pay,transactionId:document.getElementById('co-trx')?.value.trim()||'',items:[...cart],subtotal:sub,shippingCharge:ship,total:sub+ship,status:'pending',userId:currentUser?.uid||'guest',orderId:'NTC-'+Date.now(),createdAt:new Date().toISOString()};
+  try{
+    await push(ref(db,'orders'),order);
+    localStorage.removeItem('ntc_cart');cart=[];saveCart();
+    document.getElementById('ok-oid').textContent=order.orderId;
+    document.getElementById('order-ok-modal').classList.add('open');
+  }catch(e){toast('Order failed. Please try again.','error');}
+  finally{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-check"></i> Confirm Order';}
+};
+
+// ─── PROFILE ────────────────────────────────────────────────────────────────
+async function initProfile(){
+  if(!currentUser){nav('login');return;}
+  const snap=await get(ref(db,`users/${currentUser.uid}`));
+  const ud=snap.exists()?snap.val():{};
+  const nm=ud.name||currentUser.displayName||'User';
+  document.getElementById('prof-nm').textContent=nm;
+  document.getElementById('prof-em').textContent=currentUser.email;
+  document.getElementById('prof-av').textContent=nm[0].toUpperCase();
+  document.getElementById('p-nm').value=nm;
+  document.getElementById('p-ph').value=ud.phone||'';
+  document.getElementById('p-em').value=currentUser.email;
+  document.getElementById('p-addr').value=ud.address||'';
+}
+window.saveProfile=async()=>{
+  if(!currentUser)return;
+  const name=document.getElementById('p-nm').value.trim();
+  if(!name){toast('Name required','error');return;}
+  try{
+    await fbUpdateProfile(currentUser,{displayName:name});
+    await update(ref(db,`users/${currentUser.uid}`),{name,phone:document.getElementById('p-ph').value.trim(),address:document.getElementById('p-addr').value.trim()});
+    toast('Profile saved!');
+    document.getElementById('prof-nm').textContent=name;
+    document.getElementById('prof-av').textContent=name[0].toUpperCase();
+    document.getElementById('hdr-av').textContent=name[0].toUpperCase();
+  }catch(e){toast(e.message,'error');}
+};
+window.changePassword=async()=>{
+  const np=document.getElementById('new-pwd').value;
+  const cp=document.getElementById('conf-pwd').value;
+  if(!np||np.length<6){toast('Minimum 6 characters','error');return;}
+  if(np!==cp){toast('Passwords do not match','error');return;}
+  try{await updatePassword(currentUser,np);toast('Password updated!');document.getElementById('new-pwd').value='';document.getElementById('conf-pwd').value='';}
+  catch(e){toast(e.code==='auth/requires-recent-login'?'Please log out and log in again to change password':e.message,'error');}
+};
+
+// ─── ORDERS ────────────────────────────────────────────────────────────────
+async function initOrders(){
+  if(!currentUser){nav('login');return;}
+  const el=document.getElementById('orders-c');
+  el.innerHTML='<div class="spin-box"><div class="spin"></div></div>';
+  try{
+    const ud=await get(ref(db,`users/${currentUser.uid}`));
+    if(ud.exists()){const d=ud.val();document.getElementById('ord-nm').textContent=d.name||currentUser.email;document.getElementById('ord-av').textContent=(d.name||'U')[0].toUpperCase();}
+    const oSnap=await get(ref(db,'orders'));
+    let ords=[];if(oSnap.exists())oSnap.forEach(o=>{const v=o.val();if(v.userId===currentUser.uid)ords.push({id:o.key,...v});});
+    ords.sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0));
+    if(!ords.length){el.innerHTML='<div class="empty-box"><i class="fa-solid fa-bag-shopping"></i><h4 style="font-size:17px;margin-bottom:6px">No orders yet</h4><p style="font-size:13px;margin-bottom:16px">Start shopping to see your orders here!</p><button onclick="nav(\'products\')" class="btn-pri" style="width:auto;padding:10px 22px">Start Shopping</button></div>';return;}
+    const sc={'pending':'s-pending','processing':'s-processing','shipped':'s-shipped','delivered':'s-delivered','cancelled':'s-cancelled'};
+    el.innerHTML=ords.map(o=>`<div class="ord-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:11px;flex-wrap:wrap">
+        <div><div style="font-size:11.5px;color:#aaa;margin-bottom:2px">Order ID</div><strong style="font-size:13px">${o.orderId||o.id}</strong></div>
+        <div style="text-align:right"><span class="ord-status ${sc[o.status]||'s-pending'}">${(o.status||'pending').toUpperCase()}</span><div style="font-size:11px;color:#aaa;margin-top:3px">${new Date(o.createdAt||Date.now()).toLocaleDateString('en-BD',{year:'numeric',month:'short',day:'numeric'})}</div></div>
+      </div>
+      <div style="border-top:1px solid #f5f5f5;padding-top:11px">${(o.items||[]).slice(0,2).map(i=>`<div style="display:flex;gap:9px;align-items:center;margin-bottom:7px"><img src="${(i.images&&i.images[0])||i.imageUrl||'https://placehold.co/46?text=P'}" style="width:44px;height:44px;object-fit:cover;border-radius:6px;flex-shrink:0" onerror="this.src='https://placehold.co/46?text=P'" alt=""><div><div style="font-size:12.5px;font-weight:500">${i.name}</div><div style="font-size:11px;color:#aaa">Qty: ${i.qty||1}</div></div></div>`).join('')}${o.items?.length>2?`<p style="font-size:12px;color:#aaa;margin-top:4px">+${o.items.length-2} more items</p>`:''}</div>
+      <div style="border-top:1px solid #f5f5f5;padding-top:9px;margin-top:9px;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:12px;color:#aaa">${(o.paymentMethod||'cod').toUpperCase()}</span>
+        <strong style="font-size:15px;color:var(--base)">৳${(o.total||0).toLocaleString()}</strong>
+      </div>
+    </div>`).join('');
+  }catch(e){el.innerHTML='<p style="color:red;padding:20px">Error loading orders</p>';}
+}
+
+// ─── WISHLIST ────────────────────────────────────────────────────────────────
+function initWishlist(){
+  const el=document.getElementById('wishlist-c');
+  if(!wishlist.length){el.innerHTML='<div class="empty-box"><i class="fa-regular fa-heart"></i><h4 style="font-size:17px;margin-bottom:6px">Your wishlist is empty</h4><p style="font-size:13px;margin-bottom:16px">Save products you love!</p><button onclick="nav(\'products\')" class="btn-pri" style="width:auto;padding:10px 22px">Browse Products</button></div>';return;}
+  el.innerHTML=`<div class="prod-grid">${wishlist.map(p=>{
+    const img=(p.images&&p.images[0])||p.imageUrl||'https://placehold.co/300x300/f5f5f5/888?text=Product';
+    return`<div class="prod-card">
+      <div class="prod-img"><img src="${img}" onclick="nav('product-detail','${p.id}')" style="cursor:pointer" onerror="this.src='https://placehold.co/300?text=P'" alt="${p.name}">
+        <button class="wish-btn on" onclick="removeWishItem('${p.id}',this)"><i class="fa-solid fa-heart"></i></button>
+      </div>
+      <div class="prod-body">
+        <div class="prod-nm" onclick="nav('product-detail','${p.id}')">${p.name}</div>
+        <div class="price-row"><span class="price-now">৳${(p.discountPrice||p.price||0).toLocaleString()}</span>${p.discountPrice&&p.price?`<span class="price-was">৳${p.price.toLocaleString()}</span>`:''}</div>
+        <button class="atc-btn" onclick="addToCart('${p.id}')"><i class="fa-solid fa-cart-plus"></i> Add to Cart</button>
+      </div>
+    </div>`;}).join('')}</div>`;
+}
+window.removeWishItem=(id)=>{wishlist=wishlist.filter(i=>i.id!==id);saveWish();toast('Removed from wishlist','info');initWishlist();};
+
+// ─── CONTACT ────────────────────────────────────────────────────────────────
+window.sendMsg=async()=>{
+  const name=document.getElementById('ct-name').value.trim();
+  const phone=document.getElementById('ct-phone').value.trim();
+  const msg=document.getElementById('ct-msg').value.trim();
+  if(!name||!phone||!msg){toast('Please fill required fields','error');return;}
+  const btn=document.getElementById('ct-btn');btn.disabled=true;btn.textContent='Sending...';
+  try{
+    await push(ref(db,'messages'),{name,phone,email:document.getElementById('ct-email').value.trim(),message:msg,createdAt:new Date().toISOString()});
+    toast('Message sent! We\'ll contact you soon. 🎉');
+    ['ct-name','ct-phone','ct-email','ct-msg'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  }catch(e){toast('Failed to send. Please call us directly.','error');}
+  finally{btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Send Message';}
+};
+
+// ─── INIT ────────────────────────────────────────────────────────────────────
+updateBadges();
+loadSettings().then(()=>nav('home'));
+document.querySelectorAll('.modal-ov').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+</script>
+</body>
+</html>
