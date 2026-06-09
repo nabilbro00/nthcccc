@@ -1243,19 +1243,22 @@ function applySettings() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-  applySettings();
-  renderCategories();
-  await loadProducts();
-  renderHeroSlider();
-  renderHealthTips();
-  renderTestimonials();
-  updateCartUI();
-  initScrollTop();
-  initProductModalTabs();
-  initStarRating();
-  document.getElementById('searchInput').addEventListener('input', liveSearch);
-});
+    applySettings();
+    renderCategories();
+    await loadProducts();
+    renderHeroSlider();
+    renderHealthTips();
+    renderTestimonials();
+    updateCartUI();
+    initScrollTop();
+    initProductModalTabs();
+    initStarRating();
+    document.getElementById('searchInput').addEventListener('input', liveSearch);
+    // Sync config from Firestore in background
+    refreshConfigFromFirestore();
+  });
 
+  
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   if (user) {
@@ -1291,6 +1294,33 @@ async function loadProducts() {
   renderAllProducts();
 }
 
+  // Sync config from Firestore — updates localStorage + re-renders UI
+  async function refreshConfigFromFirestore() {
+    try {
+      const [stSnap, catSnap, bnSnap, cpSnap] = await Promise.all([
+        getDoc(doc(db,'config','settings')),
+        getDoc(doc(db,'config','categories')),
+        getDoc(doc(db,'config','banners')),
+        getDoc(doc(db,'config','coupons')),
+      ]);
+      let changed = false;
+      if(stSnap.exists()) { localStorage.setItem('hc_settings', JSON.stringify(stSnap.data())); changed=true; }
+      if(catSnap.exists() && stSnap.data()?.list?.length) { localStorage.setItem('hc_categories', JSON.stringify(catSnap.data().list||[])); changed=true; }
+      else if(catSnap.exists()) { localStorage.setItem('hc_categories', JSON.stringify(catSnap.data().list||[])); changed=true; }
+      if(bnSnap.exists()) { localStorage.setItem('hc_banners', JSON.stringify(bnSnap.data().list||[])); changed=true; }
+      if(cpSnap.exists()) { localStorage.setItem('hc_coupons', JSON.stringify(cpSnap.data().list||[])); changed=true; }
+      if(changed) {
+        applySettings();
+        renderCategories();
+        renderHeroSlider();
+      }
+    } catch(e) {
+      // Firestore unavailable — using localStorage fallback
+      console.warn('Firestore config sync failed, using localStorage:', e.message);
+    }
+  }
+
+  
 function productCard(p) {
   const inWish = wishlist.includes(p.id);
   const hasDiscount = p.salePrice && p.salePrice < p.price;
