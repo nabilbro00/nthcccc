@@ -1272,27 +1272,65 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 // ========== PRODUCTS ==========
-async function loadProducts() {
-  const _lsP = localStorage.getItem('hc_products');
-  const lsProducts = _lsP ? JSON.parse(_lsP) : [];
+
+// Helper: load consolidated backup from appSettings/productsList (written by admin panel)
+async function _getProductsBackup() {
   try {
-    const snap = await getDocs(collection(db, 'products'));
-    if (!snap.empty) {
-      const fsProducts = snap.docs.map(d => ({id:d.id,...d.data()}));
-      const fsIds = new Set(fsProducts.map(p=>p.id));
-      const lsOnly = lsProducts.filter(p=>!fsIds.has(p.id));
-      allProducts = [...fsProducts, ...lsOnly];
-    } else {
-      allProducts = lsProducts;
-    }
-  } catch {
-    allProducts = lsProducts;
-  }
+    const snap = await getDoc(doc(db,'appSettings','productsList'));
+    if(snap.exists() && snap.data().items?.length) return snap.data().items;
+  } catch {}
+  return [];
+}
+
+function _applyAndRender(products) {
+  if(!products.length) return;
+  allProducts = products;
   filteredProducts = [...allProducts];
   renderFeaturedProducts();
   renderBestSelling();
   renderNewArrivals();
   renderAllProducts();
+}
+
+async function loadProducts() {
+  // Initial load
+  try {
+    const snap = await getDocs(collection(db, 'products'));
+    if (!snap.empty) {
+      _applyAndRender(snap.docs.map(d => ({id:d.id,...d.data()})));
+    } else {
+      // products collection empty — try consolidated backup saved by admin panel
+      const backup = await _getProductsBackup();
+      _applyAndRender(backup);
+    }
+  } catch {
+    // Firestore read failed — try consolidated backup
+    const backup = await _getProductsBackup();
+    if(backup.length) {
+      _applyAndRender(backup);
+    }
+  }
+
+  // Real-time listener: automatically update when admin adds/edits/deletes products
+  onSnapshot(
+    collection(db, 'products'),
+    snap => {
+      const fsProducts = snap.docs.map(d => ({id:d.id,...d.data()}));
+      if(fsProducts.length) {
+        _applyAndRender(fsProducts);
+      } else {
+        // Products collection became empty — check consolidated backup
+        _getProductsBackup().then(backup => { if(backup.length) _applyAndRender(backup); });
+      }
+    },
+    () => {
+      // onSnapshot failed — fallback: poll backup every 30s
+      setInterval(async () => {
+        const backup = await _getProductsBackup();
+        if(backup.length) _applyAndRender(backup);
+      }, 30000);
+    }
+  );
 }
 
 function productCard(p) {
