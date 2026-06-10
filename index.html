@@ -1213,8 +1213,13 @@ const healthTipsData = [
 ];
 
 // ========== INIT ==========
-function applySettings() {
-  const s = JSON.parse(localStorage.getItem('hc_settings')||'{}');
+async function applySettings() {
+  let s = {};
+  try {
+    const snap = await getDoc(doc(db,'appSettings','settings'));
+    if(snap.exists()) { s = snap.data(); localStorage.setItem('hc_settings', JSON.stringify(s)); }
+    else s = JSON.parse(localStorage.getItem('hc_settings')||'{}');
+  } catch { s = JSON.parse(localStorage.getItem('hc_settings')||'{}'); }
   if(s.siteName){
     document.getElementById('navBrandText').textContent=s.siteName;
     document.getElementById('footerSiteName').textContent=s.siteName;
@@ -1231,7 +1236,6 @@ function applySettings() {
   if(s.waNum){ const wa='https://wa.me/88'+s.waNum.replace(/\D/g,''); document.getElementById('socialWa').href=wa; document.getElementById('waFloatLink').href=wa; }
   if(s.ytLink) document.getElementById('socialYt').href=s.ytLink;
   if(s.seoTitle) document.title=s.seoTitle;
-  // Apply logo
   if(s.logo){
     document.getElementById('navLogoImg').src=s.logo;
     document.getElementById('navLogoImg').style.display='';
@@ -1243,22 +1247,19 @@ function applySettings() {
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-    applySettings();
-    renderCategories();
-    await loadProducts();
-    renderHeroSlider();
-    renderHealthTips();
-    renderTestimonials();
-    updateCartUI();
-    initScrollTop();
-    initProductModalTabs();
-    initStarRating();
-    document.getElementById('searchInput').addEventListener('input', liveSearch);
-    // Sync config from Firestore in background
-    refreshConfigFromFirestore();
-  });
+  await applySettings();
+  await renderCategories();
+  await loadProducts();
+  await renderHeroSlider();
+  renderHealthTips();
+  renderTestimonials();
+  updateCartUI();
+  initScrollTop();
+  initProductModalTabs();
+  initStarRating();
+  document.getElementById('searchInput').addEventListener('input', liveSearch);
+});
 
-  
 onAuthStateChanged(auth, async (user) => {
   currentUser = user;
   if (user) {
@@ -1294,33 +1295,6 @@ async function loadProducts() {
   renderAllProducts();
 }
 
-  // Sync config from Firestore — updates localStorage + re-renders UI
-  async function refreshConfigFromFirestore() {
-    try {
-      const [stSnap, catSnap, bnSnap, cpSnap] = await Promise.all([
-        getDoc(doc(db,'config','settings')),
-        getDoc(doc(db,'config','categories')),
-        getDoc(doc(db,'config','banners')),
-        getDoc(doc(db,'config','coupons')),
-      ]);
-      let changed = false;
-      if(stSnap.exists()) { localStorage.setItem('hc_settings', JSON.stringify(stSnap.data())); changed=true; }
-      if(catSnap.exists() && stSnap.data()?.list?.length) { localStorage.setItem('hc_categories', JSON.stringify(catSnap.data().list||[])); changed=true; }
-      else if(catSnap.exists()) { localStorage.setItem('hc_categories', JSON.stringify(catSnap.data().list||[])); changed=true; }
-      if(bnSnap.exists()) { localStorage.setItem('hc_banners', JSON.stringify(bnSnap.data().list||[])); changed=true; }
-      if(cpSnap.exists()) { localStorage.setItem('hc_coupons', JSON.stringify(cpSnap.data().list||[])); changed=true; }
-      if(changed) {
-        applySettings();
-        renderCategories();
-        renderHeroSlider();
-      }
-    } catch(e) {
-      // Firestore unavailable — using localStorage fallback
-      console.warn('Firestore config sync failed, using localStorage:', e.message);
-    }
-  }
-
-  
 function productCard(p) {
   const inWish = wishlist.includes(p.id);
   const hasDiscount = p.salePrice && p.salePrice < p.price;
@@ -1375,9 +1349,21 @@ function renderAllProducts() {
 }
 
 // ========== CATEGORIES ==========
-function renderCategories() {
-  const _storedCats = localStorage.getItem('hc_categories');
-  const _activeCats = _storedCats ? JSON.parse(_storedCats) : [];
+async function renderCategories() {
+  let _activeCats = [];
+  try {
+    const snap = await getDoc(doc(db,'appSettings','categories'));
+    if(snap.exists() && snap.data().items?.length) {
+      _activeCats = snap.data().items;
+      localStorage.setItem('hc_categories', JSON.stringify(_activeCats));
+    } else {
+      const _stored = localStorage.getItem('hc_categories');
+      _activeCats = _stored ? JSON.parse(_stored) : [];
+    }
+  } catch {
+    const _stored = localStorage.getItem('hc_categories');
+    _activeCats = _stored ? JSON.parse(_stored) : [];
+  }
   const row = document.getElementById('categoriesRow');
   row.innerHTML = _activeCats.map(c=>`
     <div class="col-6 col-md-3 col-lg-2">
@@ -1711,12 +1697,24 @@ window.selectPayment = function(method) {
   document.getElementById('pay-'+method).classList.add('selected');
 }
 
-window.applyCoupon = function() {
+window.applyCoupon = async function() {
   const code = document.getElementById('couponInput').value.trim().toUpperCase();
   const subtotal = cart.reduce((s,c)=>{const p=allProducts.find(x=>x.id===c.id);return s+((p?.salePrice||p?.price||0)*c.qty);},0);
-  // Check admin-saved coupons from localStorage first
-  const _lsCoupons = localStorage.getItem('hc_coupons');
-  const _adminCoupons = _lsCoupons ? JSON.parse(_lsCoupons) : [];
+  // Load coupons from Firestore first, fallback to localStorage
+  let _adminCoupons = [];
+  try {
+    const snap = await getDoc(doc(db,'appSettings','coupons'));
+    if(snap.exists()) {
+      _adminCoupons = snap.data().items || [];
+      localStorage.setItem('hc_coupons', JSON.stringify(_adminCoupons));
+    } else {
+      const _lsCoupons = localStorage.getItem('hc_coupons');
+      _adminCoupons = _lsCoupons ? JSON.parse(_lsCoupons) : [];
+    }
+  } catch {
+    const _lsCoupons = localStorage.getItem('hc_coupons');
+    _adminCoupons = _lsCoupons ? JSON.parse(_lsCoupons) : [];
+  }
   const _adminCoupon = _adminCoupons.find(c=>c.code===code && c.active && (!c.expiry||new Date(c.expiry)>=new Date()) && (!c.minOrder||subtotal>=c.minOrder));
   const hardcodedCoupons = {'HERBAL10':10,'FIRST20':20,'SAVE50':50};
   const discPct = _adminCoupon ? _adminCoupon.discount : (hardcodedCoupons[code]||0);
@@ -2033,12 +2031,24 @@ const heroSlides = [
 ];
 let curSlide=0;
 
-function renderHeroSlider() {
+async function renderHeroSlider() {
   const slider=document.getElementById('heroSlider');
   const dots=document.getElementById('sliderDots');
-  // Use admin banners from localStorage if available (active ones only)
-  const _lsBanners = localStorage.getItem('hc_banners');
-  const _adminBanners = _lsBanners ? JSON.parse(_lsBanners).filter(b=>b.active) : [];
+  // Load admin banners from Firestore first, fallback to localStorage
+  let _adminBanners = [];
+  try {
+    const snap = await getDoc(doc(db,'appSettings','banners'));
+    if(snap.exists() && snap.data().items?.length) {
+      localStorage.setItem('hc_banners', JSON.stringify(snap.data().items));
+      _adminBanners = snap.data().items.filter(b=>b.active);
+    } else {
+      const _lsBanners = localStorage.getItem('hc_banners');
+      _adminBanners = _lsBanners ? JSON.parse(_lsBanners).filter(b=>b.active) : [];
+    }
+  } catch {
+    const _lsBanners = localStorage.getItem('hc_banners');
+    _adminBanners = _lsBanners ? JSON.parse(_lsBanners).filter(b=>b.active) : [];
+  }
   const slides = _adminBanners.length
     ? _adminBanners.map(b=>({badge:'',title:b.title||'',sub:b.sub||'',img:b.img||'',bg:b.color||'#e8f5e9',cat:'all',emoji:'🌿',link:b.link||''}))
     : heroSlides;
@@ -2057,7 +2067,7 @@ function renderHeroSlider() {
       </div>
     </div>`).join('');
   dots.innerHTML=slides.map((_,i)=>`<div class="slider-dot ${i===0?'active':''}" onclick="goToSlide(${i})"></div>`).join('');
-  setInterval(nextSlide,4000);
+  if(slides.length>1) setInterval(()=>goToSlide((curSlide+1)%slides.length),4000);
 }
 
 window.goToSlide = function(idx) {
